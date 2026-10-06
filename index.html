@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>A12 Studio</title>
+<meta name="description" content="A12 Studio — ИИ-контент под маркетинговые задачи бизнеса: брендовые ИИ-сериалы, рекламные ИИ-креативы, ИИ-аватары.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;600;700&family=Onest:wght@400;500;600&display=swap">
+<link rel="icon" href="assets/favicon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="A12 Studio">
+<meta property="og:title" content="A12 Studio — ИИ-контент под маркетинговые задачи бизнеса">
+<meta property="og:description" content="Брендовые ИИ-сериалы, рекламные ИИ-креативы, ИИ-аватары. Маркетинг в основе.">
+<meta property="og:url" content="https://a12studio.github.io/">
+<meta property="og:image" content="https://a12studio.github.io/assets/og.jpg">
+<meta property="og:locale" content="ru_RU">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+/* Layout: каждый блок — плоскость цвета своего ролика; текст слева на воздухе,
+   персонажи справа, края кадров растворяются в фоне. Шрифт: широкий Unbounded
+   (тонкий + жирные акценты) и спокойный Onest для чтения. */
+:root{
+  --paper:#ffffff;
+  --mist:#d6d4d5;      /* «Подход» = фон ролика с карточками */
+  --sand:#cdc7c1;      /* услуги */
+  --night:#1b1316;     /* «Как начать» = фон ночного ролика */
+  --cloud:#e8e8e9;     /* «Примеры» = фон ролика «Майя заходит» */
+  --fog:#f1f1f1;       /* финал = фон ролика с котом */
+  --ink:#323232;
+  --ink-2:rgba(50,50,50,.74);
+  --navy:#0f3473;
+  --spark:#f0682a;
+  --line:rgba(50,50,50,.15);
+  --f-head:"Unbounded","Helvetica Neue",Arial,sans-serif;
+  --f-body:"Onest","Helvetica Neue",Arial,sans-serif;
+  --wrap:1320px;
+  --gut:clamp(16px,4vw,56px);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.65 var(--f-body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+img,video,svg{max-width:100%;display:block}
+.wrap{max-width:var(--wrap);margin-inline:auto;padding-inline:var(--gut)}
+h1,h2,h3,h5{font-family:var(--f-head);font-weight:300;letter-spacing:-.035em;line-height:1.06;text-wrap:balance;margin:0}
+b,strong{font-weight:600}
+.acc{font-weight:700;color:var(--navy);letter-spacing:-.045em}
+.label{font:600 11.5px/1.4 var(--f-body);text-transform:uppercase;letter-spacing:.16em}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--spark);vertical-align:.12em;margin-left:.45em}
+:focus-visible{outline:2px solid var(--spark);outline-offset:3px;border-radius:4px}
+
+.pill{display:inline-flex;align-items:center;gap:.7em;padding:1em 1.5em;border-radius:999px;background:var(--navy);color:var(--paper);text-decoration:none;font:600 15px/1 var(--f-body);transition:background .3s,gap .3s}
+.pill:hover{background:var(--ink);gap:1em}
+.go{display:inline-flex;align-items:center;gap:.7em;text-decoration:none;font:600 16px/1 var(--f-body);padding:.9em 0;border-bottom:1.5px solid currentColor;transition:gap .3s,color .3s}
+.go:hover{gap:1.1em;color:var(--navy)}
+
+/* ---------- интро ---------- */
+.intro{position:fixed;inset:0;z-index:60;background:var(--paper);display:grid;place-items:center;animation:introOut .8s cubic-bezier(.7,0,.2,1) 1.6s forwards}
+.intro .mark{width:min(48vw,400px);color:var(--ink);overflow:visible}
+.intro .w1,.intro .w2{animation:rise 1s cubic-bezier(.2,.8,.2,1) both}
+.intro .w2{animation-delay:.2s}
+.intro .w3{transform-box:fill-box;transform-origin:center;animation:pop .4s cubic-bezier(.3,1.6,.5,1) 1s both}
+@keyframes rise{from{opacity:0;transform:translateY(160px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(0)}to{opacity:1;transform:scale(1)}}
+@keyframes introOut{to{transform:translateY(-100%);visibility:hidden}}
+.intro.skip{display:none}
+
+/* ---------- шапка: логотип + меню всегда на виду ---------- */
+.top{position:fixed;left:0;right:0;top:env(safe-area-inset-top,0px);z-index:30;transition:background .4s}
+.top.scrolled{background:rgba(255,255,255,.8);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.top .wrap{display:flex;align-items:center;gap:28px;height:72px}
+.top .logo svg{width:60px;height:auto;color:var(--ink)}
+.top nav{display:flex;gap:30px;margin-left:auto}
+.top nav a{text-decoration:none;font-size:14.5px;font-weight:500;position:relative}
+.top nav a::after{content:"";position:absolute;left:0;right:0;bottom:-5px;height:1.5px;background:currentColor;transform:scaleX(0);transform-origin:left;transition:transform .35s}
+.top nav a:hover::after{transform:scaleX(1)}
+.top .pill{padding:.8em 1.2em;font-size:14px}
+@media (max-width:980px){
+  .top .wrap{flex-wrap:wrap;height:auto;padding-block:12px 0;gap:12px}
+  .top .pill{margin-left:auto}
+  .top nav{order:3;width:100%;margin:0;gap:22px;overflow-x:auto;padding-block:6px 10px;scrollbar-width:none}
+  .top nav::-webkit-scrollbar{display:none}
+  .top nav a{white-space:nowrap}
+}
+
+/* ---------- первый экран: кот — фон справа, текст на белом слева ---------- */
+.hero{position:relative;background:var(--paper);min-height:min(88vh,820px);display:flex;overflow:hidden}
+.cat{position:absolute;z-index:1;right:max(var(--gut),calc((100vw - var(--wrap))/2 + var(--gut)));top:52%;translate:0 -50%;width:min(44vw,640px);aspect-ratio:1900/1300;
+  -webkit-mask-image:linear-gradient(to bottom,#000 72%,transparent 98%);mask-image:linear-gradient(to bottom,#000 72%,transparent 98%)}
+.cat svg{width:100%;height:100%}
+.hero .wrap{position:relative;z-index:2;width:100%;display:flex;flex-direction:column;justify-content:center;padding-block:150px 56px}
+.hero .txt{max-width:min(600px,50%);display:grid;gap:clamp(22px,2.6vw,32px)}
+.hero .eyebrow{color:var(--ink-2)}
+.hero h1{font-size:clamp(34px,4.3vw,64px)}
+.hero p{margin:0;max-width:40ch;font-size:clamp(16.5px,1.3vw,19px);color:var(--ink-2)}
+.keys{list-style:none;margin:clamp(36px,5vw,64px) 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px;max-width:min(640px,54%)}
+.keys li{font:600 13.5px/1 var(--f-body);padding:.85em 1.15em;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.75);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);transition:background .3s,color .3s,border-color .3s;will-change:transform;white-space:nowrap}
+.keys li:hover{background:var(--navy);border-color:var(--navy);color:var(--paper)}
+@media (max-width:900px){
+  .hero{flex-direction:column;min-height:0}
+  .cat{position:relative;inset:auto;right:auto;top:auto;translate:none;width:min(100%,520px);margin:96px auto 0}
+  .hero .wrap{padding-block:0 48px;margin-top:-4%}
+  .hero .txt,.keys{max-width:none}
+}
+
+/* ---------- секции ---------- */
+section.block{position:relative;padding-block:clamp(88px,11vw,160px);overflow:hidden}
+.sec-title{margin-bottom:clamp(28px,4vw,48px)}
+.sec-title h2{font-size:clamp(34px,4.6vw,68px)}
+.sec-title .label{display:block;margin-top:16px;color:var(--ink-2)}
+.lead-p{margin:0 0 clamp(32px,4vw,52px);max-width:44ch;font-size:clamp(17px,1.4vw,20px)}
+/* ролик-фон справа, растворяется влево и по вертикали */
+.bgv{position:absolute;top:0;bottom:0;right:0;width:min(46%,700px);height:100%;object-fit:cover;z-index:0;
+  -webkit-mask-image:linear-gradient(to right,transparent 0,#000 34%),linear-gradient(to bottom,transparent 0,#000 12%,#000 88%,transparent 100%);-webkit-mask-composite:source-in;
+  mask-image:linear-gradient(to right,transparent 0,#000 34%),linear-gradient(to bottom,transparent 0,#000 12%,#000 88%,transparent 100%);mask-composite:intersect}
+.over{position:relative;z-index:1;width:min(640px,52%)}
+.media-left .bgv{right:auto;left:0;
+  -webkit-mask-image:linear-gradient(to left,transparent 0,#000 34%),linear-gradient(to bottom,transparent 0,#000 12%,#000 88%,transparent 100%);
+  mask-image:linear-gradient(to left,transparent 0,#000 34%),linear-gradient(to bottom,transparent 0,#000 12%,#000 88%,transparent 100%)}
+.media-left .over{margin-left:auto}
+@media (max-width:900px){
+  .over{width:54%}
+  .over .steps li{padding:18px;min-height:0}
+}
+@media (max-width:720px){
+  .bgv,#start .bgv{position:relative;width:100%;height:auto;aspect-ratio:4/5;margin-bottom:-22%;
+    -webkit-mask-image:linear-gradient(#000 62%,transparent);mask-image:linear-gradient(#000 62%,transparent)}
+  section.block.has-bgv{padding-top:0}
+  .over{width:auto}
+  .media-left .bgv{-webkit-mask-image:linear-gradient(#000 62%,transparent);mask-image:linear-gradient(#000 62%,transparent)}
+}
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border-radius:22px;overflow:hidden}
+.steps li{background:var(--sec);padding:clamp(20px,2.4vw,30px);display:grid;align-content:start;gap:10px;min-height:clamp(180px,17vw,230px)}
+.steps .n{font:700 13px/1 var(--f-head);color:var(--navy)}
+.steps h3{font-size:clamp(16px,1.35vw,20px);font-weight:400;letter-spacing:-.02em;line-height:1.25}
+.steps p{margin:0;color:var(--ink-2);font-size:15.5px;line-height:1.55}
+@media (max-width:520px){.steps{grid-template-columns:1fr}.steps li{min-height:0}}
+#podhod{background:var(--mist);--sec:var(--mist)}
+#podhod .bgv{object-position:42% 50%}
+
+/* услуги */
+#uslugi{background:var(--sand)}
+#uslugi .sec-title{display:flex;justify-content:space-between;align-items:end;gap:16px 40px;flex-wrap:wrap}
+#uslugi .sec-title p{margin:0;max-width:44ch;color:var(--ink-2)}
+.svc{border-top:1px solid var(--line)}
+.svc:last-of-type{border-bottom:1px solid var(--line)}
+.svc summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:8px 16px;align-items:center;padding-block:clamp(22px,2.8vw,34px)}
+.svc summary::-webkit-details-marker{display:none}
+.svc .n{font:700 13px/1 var(--f-head);color:var(--navy);align-self:start;padding-top:.9em}
+.svc .t h3{font-size:clamp(22px,2.8vw,40px);transition:color .3s}
+.svc .t p{margin:8px 0 0;color:var(--ink-2);max-width:60ch;font-size:16px}
+.svc summary:hover h3{color:var(--navy)}
+.plus{width:48px;height:48px;border-radius:50%;border:1.5px solid var(--ink);position:relative;flex:none;transition:background .3s,color .3s,transform .4s}
+.plus::before,.plus::after{content:"";position:absolute;left:50%;top:50%;width:15px;height:1.5px;background:currentColor;translate:-50% -50%;transition:transform .4s}
+.plus::after{transform:rotate(90deg)}
+.svc[open] .plus{background:var(--ink);color:var(--sand)}
+.svc[open] .plus::after{transform:rotate(0)}
+.svc .body{display:grid;gap:clamp(30px,3.6vw,48px);padding:0 0 clamp(40px,5vw,64px) 80px;min-width:0}
+/* 1. факты одной строкой — первое, что видит глаз */
+.facts{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:10px}
+.facts li{display:flex;flex-direction:column;gap:4px;padding:14px 20px;border-radius:16px;background:rgba(255,255,255,.42);min-width:170px}
+.facts span{font:600 11px/1.3 var(--f-body);text-transform:uppercase;letter-spacing:.14em;color:var(--ink-2)}
+.facts b{font:600 17px/1.2 var(--f-head);letter-spacing:-.03em}
+/* 2. суть + кому подходит */
+.lead-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,64px)}
+.lede{margin:0;max-width:52ch;font-size:clamp(17px,1.4vw,20px);line-height:1.6}
+.who h4,.meta h4,.panel h4{font:600 11.5px/1.4 var(--f-body);text-transform:uppercase;letter-spacing:.16em;margin:0 0 14px;color:var(--navy)}
+.who ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.who li{padding-left:26px;position:relative;font-size:16px;line-height:1.5}
+.who li::before{content:"";position:absolute;left:0;top:.62em;width:12px;height:1.5px;background:var(--navy)}
+/* 3. форматы вкладками */
+.fmts>input{position:absolute;opacity:0;pointer-events:none}
+.tabs{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:clamp(24px,4vw,64px);border-bottom:1.5px solid var(--line)}
+.tabs label{cursor:pointer;padding:0 0 16px;font:400 clamp(15px,1.35vw,19px)/1.25 var(--f-head);letter-spacing:-.025em;color:var(--ink-2);border-bottom:2.5px solid transparent;margin-bottom:-1.5px;transition:color .25s,border-color .25s}
+.tabs small{display:block;font:600 11px/1.4 var(--f-body);text-transform:uppercase;letter-spacing:.14em;margin-bottom:8px;color:var(--ink-2)}
+.tabs label:hover{color:var(--ink)}
+.fmts>input:nth-of-type(1):checked~.tabs label:nth-child(1),
+.fmts>input:nth-of-type(2):checked~.tabs label:nth-child(2){color:var(--ink);border-color:var(--navy)}
+.fmts>input:nth-of-type(1):focus-visible~.tabs label:nth-child(1),
+.fmts>input:nth-of-type(2):focus-visible~.tabs label:nth-child(2){outline:2px solid var(--spark);outline-offset:4px}
+.panel{display:none;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,64px);padding-top:28px}
+.fmts>input:nth-of-type(1):checked~.pa,.fmts>input:nth-of-type(2):checked~.pb{display:grid}
+.panel h5{font-size:clamp(18px,1.6vw,22px);font-weight:400;letter-spacing:-.025em;margin-bottom:10px}
+.panel .ptop p{margin:0;color:var(--ink-2);max-width:42ch}
+/* 4. «что входит» — нумерованные шаги */
+.incl{list-style:none;margin:0;padding:0;counter-reset:i}
+.incl li{counter-increment:i;break-inside:avoid;display:grid;grid-template-columns:30px minmax(0,1fr);padding:9px 0;border-top:1px solid var(--line);font-size:15.5px;line-height:1.45}
+.incl li::before{content:counter(i,decimal-leading-zero);font:700 11.5px/1.9 var(--f-head);color:var(--navy)}
+.panel .note{margin:16px 0 0;font-size:14.5px;color:var(--ink-2);max-width:60ch}
+/* 5. детали и кнопка */
+.meta{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px clamp(24px,4vw,64px);align-items:start;padding-top:28px;border-top:1px solid var(--line)}
+.meta .pill{grid-column:1/-1;justify-self:start}
+.meta p{margin:0;font-size:15px;color:var(--ink-2);max-width:46ch}
+.meta .pill{white-space:nowrap}
+@media (max-width:900px){.svc .body{padding-left:0}.lead-row,.panel,.meta{grid-template-columns:1fr}.incl{columns:1}}
+@media (max-width:560px){.svc summary{grid-template-columns:minmax(0,1fr) auto}.svc .n{display:none}.plus{width:42px;height:42px}.facts li{min-width:0;flex:1 1 40%}}
+
+/* как начать */
+#start{background:var(--night);color:#e9e2dc;--sec:var(--night)}
+@media (min-width:721px){#start .bgv{width:min(46%,640px)}}
+#start .bgv{object-position:50% 40%;filter:contrast(1.05) saturate(1.05)}
+#start::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.16;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+#start .sec-title h2{color:#fff}
+#start .acc{color:#c3cff0}
+#start .steps{background:rgba(233,226,220,.16)}
+#start .steps .n{color:var(--spark)}
+#start .steps h3{color:#fff}
+#start .steps p{color:rgba(233,226,220,.78)}
+#start .go{margin-top:36px;color:#fff}
+#start .go:hover{color:#c3cff0}
+
+/* примеры */
+#primery{background:var(--cloud)}
+/* ролик вертикальный: блок по форме кадра, Майя целиком, края растворяются со всех сторон */
+#primery .bgv{width:auto;aspect-ratio:9/16;height:100%;right:max(3vw,calc((100% - 1240px)/2));object-fit:cover;
+  -webkit-mask-image:linear-gradient(to right,transparent 0,#000 14%,#000 86%,transparent 100%),linear-gradient(to bottom,transparent 0,#000 7%,#000 95%,transparent 100%);
+  mask-image:linear-gradient(to right,transparent 0,#000 14%,#000 86%,transparent 100%),linear-gradient(to bottom,transparent 0,#000 7%,#000 95%,transparent 100%)}
+@media (max-width:720px){#primery .bgv{width:min(62%,300px);height:auto;margin:0 auto 8px;right:auto}}
+#primery p{margin:0 0 16px;max-width:44ch;font-size:clamp(17px,1.4vw,19px)}
+.links{display:flex;gap:36px;flex-wrap:wrap;margin-top:28px}
+
+/* финал */
+#contact{background:var(--fog);padding-bottom:0}
+.final{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:clamp(24px,5vw,72px);align-items:end}
+.final .txt{padding-bottom:clamp(88px,10vw,140px)}
+.final h2{font-size:clamp(32px,4.2vw,62px)}
+.final p{margin:26px 0 32px;max-width:42ch;font-size:clamp(17px,1.4vw,19px);color:var(--ink-2)}
+.final .row{display:flex;gap:16px 32px;align-items:center;flex-wrap:wrap}
+.final video{width:100%;aspect-ratio:16/9;object-fit:cover;object-position:50% 100%;
+  -webkit-mask-image:linear-gradient(to right,transparent 0,#000 18%,#000 82%,transparent 100%),linear-gradient(to bottom,transparent 0,#000 30%);-webkit-mask-composite:source-in;
+  mask-image:linear-gradient(to right,transparent 0,#000 18%,#000 82%,transparent 100%),linear-gradient(to bottom,transparent 0,#000 30%);mask-composite:intersect}
+@media (max-width:860px){.final{grid-template-columns:1fr}.final .txt{padding-bottom:0}}
+
+/* почта: меню вместо адреса на виду; адрес собирается скриптом */
+.mail{position:relative}
+.mail>button{background:none;border:0;border-bottom:1.5px solid currentColor;color:inherit;cursor:pointer}
+.mailmenu{position:absolute;left:0;bottom:calc(100% + 10px);z-index:5;min-width:250px;display:grid;padding:8px;background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 18px 40px rgba(15,52,115,.14)}
+.mailmenu[hidden]{display:none}
+.mailmenu a,.mailmenu button{display:block;text-align:left;padding:12px 14px;border-radius:10px;font:500 15px/1.2 var(--f-body);color:var(--ink);text-decoration:none;background:none;border:0;cursor:pointer}
+.mailmenu a:hover,.mailmenu button:hover{background:#eef1f8;color:var(--navy)}
+footer{background:var(--navy);color:#dfe5f3;padding-block:52px 44px}
+footer .wrap{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:24px 56px;align-items:end}
+footer svg{width:96px;color:#cdc7c1}
+footer .m-a1{fill:#fff}
+footer .c{display:flex;gap:10px 30px;flex-wrap:wrap;font-size:15px;font-weight:500}
+footer .c a{text-decoration:none;border-bottom:1px solid rgba(255,255,255,.25)}
+footer .c a:hover{border-color:#fff}
+footer small{font:600 11px/1.6 var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:rgba(223,229,243,.6);text-align:right}
+@media (max-width:720px){footer .wrap{grid-template-columns:1fr}footer small{text-align:left}}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .intro{display:none}
+}
+</style>
+
+<div class="intro" id="intro" aria-hidden="true"><svg class="mark" viewBox="540 980 2160 1030" overflow="visible"><g class="w1"><g class="m-a1" transform="translate(0,2020) scale(0.100000,-0.100000)" fill="#0f3473" stroke="none"> <path d="M17355 9980 c-22 -11 -46 -19 -53 -20 -6 0 -29 -9 -49 -20 -21 -11 -43 -20 -50 -20 -7 0 -32 -9 -55 -19 -62 -27 -135 -56 -203 -81 -33 -12 -73 -28 -90 -36 -28 -12 -57 -23 -160 -60 -22 -8 -48 -19 -57 -24 -10 -5 -34 -14 -55 -19 -21 -5 -69 -22 -108 -36 -38 -15 -92 -34 -120 -42 -27 -9 -55 -19 -60 -24 -6 -4 -29 -12 -50 -18 -22 -5 -71 -22 -110 -36 -38 -15 -90 -33 -115 -41 -25 -8 -54 -19 -65 -24 -11 -6 -45 -17 -75 -26 -137 -39 -156 -44 -175 -54 -11 -5 -38 -14 -60 -19 -40 -10 -115 -33 -170 -53 -16 -5 -48 -15 -70 -20 -22 -6 -61 -19 -87 -29 -26 -11 -56 -19 -68 -19 -12 0 -31 -5 -43 -12 -34 -18 -171 -56 -371 -103 -32 -7 -70 -18 -85 -24 -14 -6 -55 -17 -91 -25 -71 -16 -121 -28 -220 -56 -36 -9 -87 -23 -115 -29 -84 -20 -112 -49 -85 -91 8 -13 63 -16 357 -20 l348 -5 70 -34 c130 -64 205 -173 227 -331 8 -52 12 -1267 15 -3944 2 -3065 6 -3872 16 -3878 6 -4 503 -8 1103 -8 987 0 1092 2 1098 16 8 21 8 9267 0 9288 -9 22 -69 20 -119 -4z M8021 9871 c-25 -16 -1 -51 67 -95 81 -54 101 -72 150 -139 35 -49 82 -135 82 -152 0 -4 7 -21 15 -38 36 -77 68 -329 61 -477 -7 -145 -42 -449 -56 -485 -6 -15 -15 -59 -21 -99 -10 -71 -27 -143 -55 -226 -9 -25 -20 -64 -24 -88 -5 -23 -15 -52 -21 -64 -6 -12 -17 -44 -25 -72 -16 -66 -41 -134 -115 -318 -12 -29 -28 -71 -35 -93 -8 -22 -21 -53 -28 -70 -34 -73 -65 -144 -85 -187 -12 -27 -31 -69 -42 -95 -40 -89 -310 -627 -350 -698 -22 -38 -49 -88 -59 -110 -11 -22 -32 -60 -46 -85 -14 -25 -41 -74 -60 -110 -19 -36 -53 -96 -75 -135 -22 -38 -49 -88 -59 -110 -11 -22 -31 -58 -43 -80 -28 -48 -93 -166 -119 -215 -10 -19 -22 -42 -28 -50 -20 -32 -120 -213 -172 -310 -10 -19 -30 -53 -43 -75 -13 -22 -31 -53 -39 -70 -8 -16 -33 -61 -56 -100 -22 -38 -49 -88 -60 -110 -20 -39 -38 -72 -165 -310 -65 -123 -79 -150 -195 -390 -101 -210 -107 -224 -165 -360 -25 -60 -51 -118 -56 -129 -6 -10 -17 -37 -24 -60 -14 -43 -36 -104 -80 -221 -29 -79 -62 -195 -77 -270 -5 -27 -14 -58 -19 -68 -60 -110 -87 -722 -40 -908 11 -48 21 -98 21 -112 0 -14 8 -49 19 -79 10 -29 31 -90 45 -136 15 -46 31 -91 36 -100 5 -9 21 -46 36 -82 15 -36 33 -72 40 -80 7 -8 18 -28 24 -44 46 -122 350 -487 470 -564 14 -9 52 -38 85 -63 33 -25 74 -54 90 -63 17 -9 48 -27 70 -41 38 -23 164 -86 268 -133 26 -12 55 -22 65 -22 9 0 30 -7 46 -15 16 -8 54 -22 85 -30 31 -7 74 -18 96 -24 108 -28 189 -43 280 -51 241 -23 583 -13 715 20 41 11 113 29 160 41 47 12 139 48 206 81 67 32 124 58 128 58 9 0 97 66 167 127 58 49 109 141 109 196 0 12 9 48 20 80 11 31 20 64 20 74 0 10 9 45 19 78 11 33 24 78 30 100 17 71 33 129 48 180 9 28 21 75 28 105 17 70 34 132 52 195 9 28 21 75 28 105 17 70 34 132 52 195 9 28 21 75 28 105 17 70 34 132 52 195 9 28 21 75 28 105 17 70 34 132 52 195 9 28 21 75 28 105 17 70 34 132 52 195 9 28 21 75 28 105 14 59 27 108 55 210 18 64 40 147 81 298 11 42 29 106 39 142 21 74 36 131 55 210 7 30 19 78 28 105 8 28 20 73 27 100 7 28 21 79 31 115 10 36 23 85 29 110 7 25 20 74 30 110 10 36 23 83 29 105 19 75 33 130 48 180 9 28 21 75 28 105 18 73 34 132 55 205 10 33 21 76 24 95 8 44 46 140 56 140 9 0 20 -51 20 -94 0 -18 7 -58 15 -89 8 -32 19 -93 24 -135 6 -42 17 -115 26 -162 8 -47 24 -137 35 -200 11 -63 24 -142 30 -175 5 -33 15 -91 21 -130 6 -38 16 -95 24 -125 8 -30 16 -80 20 -110 6 -54 27 -160 66 -331 10 -47 19 -97 19 -111 0 -14 6 -44 14 -66 8 -22 17 -62 21 -89 3 -26 15 -86 25 -133 10 -47 29 -130 41 -185 11 -55 30 -136 41 -180 11 -44 29 -116 40 -160 28 -116 87 -326 115 -410 9 -27 20 -66 24 -85 4 -19 29 -93 54 -165 26 -71 53 -150 60 -175 12 -41 21 -65 60 -155 8 -16 25 -58 39 -92 58 -140 78 -185 157 -338 219 -430 502 -748 790 -888 292 -141 591 -137 924 13 105 47 286 140 405 208 30 18 66 37 80 44 14 7 45 26 70 43 25 17 70 46 100 64 30 18 75 45 100 61 25 16 52 33 60 37 15 8 167 106 222 144 15 11 30 19 33 19 3 0 27 15 53 34 27 18 62 41 78 50 16 9 43 25 59 36 17 11 46 29 65 40 19 11 47 28 62 38 49 32 138 82 145 82 5 1 22 12 38 25 49 40 28 56 -106 83 -63 12 -127 28 -144 36 -249 114 -392 225 -582 452 -44 52 -168 233 -185 269 -5 11 -20 38 -33 60 -42 71 -125 244 -178 370 -54 129 -67 164 -67 177 0 7 -7 26 -15 42 -9 16 -20 46 -25 65 -5 20 -15 56 -24 81 -8 25 -23 77 -34 115 -27 95 -56 196 -81 283 -99 342 -99 341 -135 522 -8 36 -20 92 -29 125 -8 33 -25 103 -36 155 -11 52 -26 115 -32 140 -6 25 -15 72 -21 105 -5 33 -18 96 -29 140 -10 45 -19 94 -19 110 0 17 -9 63 -20 104 -11 41 -20 88 -20 105 0 17 -9 64 -20 105 -11 41 -20 87 -20 103 0 15 -9 69 -19 120 -19 93 -31 161 -52 293 -6 39 -19 111 -29 160 -10 50 -23 119 -29 155 -13 76 -25 140 -51 265 -17 85 -29 148 -52 275 -5 30 -18 92 -29 138 -46 196 -61 260 -75 312 -9 30 -21 82 -29 115 -30 134 -37 163 -56 235 -11 41 -28 104 -39 140 -10 36 -28 97 -40 135 -32 108 -148 461 -164 497 -8 18 -24 60 -37 93 -12 33 -30 78 -40 101 -11 23 -19 48 -19 56 0 8 -4 18 -9 24 -5 5 -35 68 -66 139 -32 72 -61 135 -65 140 -5 6 -30 53 -57 105 -44 86 -91 164 -144 242 -11 15 -19 29 -19 32 0 8 -46 71 -127 177 -202 263 -448 453 -688 533 -38 13 -95 31 -125 42 -53 18 -112 19 -1340 21 -720 2 -1291 -1 -1299 -6z m935 -861 c119 -60 195 -139 278 -290 26 -47 51 -92 56 -100 26 -41 105 -196 160 -315 18 -38 48 -101 66 -140 18 -38 40 -88 48 -110 13 -37 23 -64 77 -197 12 -29 27 -73 35 -98 7 -25 21 -67 30 -95 10 -27 25 -72 35 -100 30 -90 68 -223 90 -325 6 -25 19 -74 29 -110 10 -36 22 -92 28 -125 6 -33 15 -91 22 -130 6 -38 18 -101 26 -140 8 -38 19 -128 24 -200 5 -71 14 -154 19 -183 16 -82 24 -588 12 -742 -14 -190 -29 -331 -52 -510 -11 -85 -19 -169 -19 -186 0 -17 -9 -64 -20 -105 -11 -41 -20 -90 -20 -109 0 -19 -9 -70 -19 -115 -10 -44 -24 -109 -30 -145 -11 -68 -21 -112 -53 -222 -10 -37 -28 -100 -39 -140 -11 -40 -29 -102 -39 -138 -10 -36 -23 -81 -29 -100 -5 -19 -21 -66 -36 -105 -14 -38 -30 -83 -35 -100 -6 -16 -17 -46 -26 -65 -9 -19 -25 -53 -34 -75 -27 -59 -119 -247 -133 -270 -148 -242 -277 -391 -423 -491 -60 -41 -164 -94 -184 -94 -6 0 -25 -7 -42 -16 -100 -52 -476 -31 -653 37 -28 10 -58 19 -67 19 -17 0 -184 84 -208 105 -8 7 -26 16 -38 20 -49 15 -240 214 -318 330 -40 62 -74 118 -74 124 0 7 -8 29 -19 49 -48 95 -64 140 -91 252 -46 197 -45 186 -44 475 1 163 6 309 13 350 7 39 16 102 21 140 6 39 16 99 24 135 8 36 19 94 25 130 6 36 20 97 30 135 11 39 25 90 31 115 6 25 20 72 30 105 10 33 21 77 25 97 3 20 12 50 20 65 8 15 15 37 15 48 0 11 9 38 20 60 11 22 20 49 20 60 0 11 9 38 20 60 11 22 19 48 20 58 0 11 7 33 14 50 15 33 49 126 68 187 5 19 17 44 24 55 8 11 14 27 14 37 0 10 8 37 19 60 10 24 24 59 31 78 32 91 42 117 54 145 7 17 19 46 26 65 7 19 18 53 26 75 8 22 19 48 25 59 6 10 17 37 24 60 7 22 23 66 35 96 12 30 30 78 40 105 10 28 28 75 40 105 12 30 30 79 41 108 38 104 58 158 84 227 14 39 30 84 35 100 5 17 32 95 60 175 28 80 57 165 64 190 8 25 19 59 24 75 16 43 46 138 71 225 13 41 30 98 38 125 9 28 22 75 29 105 18 78 33 136 55 206 11 33 19 68 19 77 0 9 7 38 16 64 9 26 22 73 30 103 43 188 120 382 177 446 51 58 118 62 213 14z"/> </g></g><g class="w2"><g class="m-2" transform="translate(0,2020) scale(0.100000,-0.100000)" fill="currentColor" stroke="none"> <path d="M21880 9979 c-19 -4 -87 -13 -150 -19 -63 -6 -158 -17 -210 -25 -52 -8 -124 -19 -160 -24 -81 -12 -199 -37 -265 -55 -27 -8 -72 -17 -100 -21 -27 -3 -70 -12 -95 -20 -25 -7 -65 -17 -90 -20 -25 -4 -54 -12 -64 -17 -11 -6 -42 -16 -70 -23 -28 -7 -67 -18 -86 -25 -19 -7 -57 -20 -85 -30 -146 -51 -276 -102 -305 -121 -8 -5 -24 -12 -34 -16 -19 -6 -95 -45 -220 -112 -32 -17 -80 -47 -105 -65 -25 -19 -64 -46 -86 -60 -177 -119 -376 -357 -441 -527 -28 -75 -64 -260 -64 -334 0 -71 29 -243 55 -325 7 -25 17 -65 20 -90 4 -25 12 -50 17 -57 5 -7 16 -34 23 -60 30 -104 81 -244 109 -298 9 -17 16 -34 16 -39 0 -5 9 -29 20 -53 11 -24 29 -64 41 -90 11 -27 24 -55 29 -63 5 -8 35 -66 67 -128 32 -62 64 -123 71 -136 6 -13 36 -60 65 -105 28 -44 65 -102 82 -128 100 -162 399 -493 445 -493 13 0 45 39 105 129 120 182 265 374 355 471 8 9 47 54 87 100 139 165 450 459 668 635 55 44 107 87 117 95 27 24 40 34 93 71 28 19 93 66 145 105 120 88 349 239 425 279 17 9 48 27 70 40 22 14 54 32 70 41 17 8 48 26 70 39 49 28 363 185 428 214 177 79 254 111 263 111 9 0 96 32 149 55 41 18 119 43 180 59 28 7 59 17 70 23 11 6 40 14 65 18 25 4 56 13 70 20 14 7 49 16 79 20 30 4 68 13 85 20 17 7 56 16 86 19 30 4 78 13 105 21 28 7 88 16 134 20 46 4 113 13 150 21 81 17 515 20 558 3 15 -6 57 -16 93 -24 206 -43 393 -153 515 -304 30 -37 55 -72 55 -77 0 -5 9 -25 19 -45 25 -47 45 -179 36 -248 -13 -115 -93 -238 -265 -411 -103 -103 -387 -343 -490 -413 -14 -9 -59 -42 -100 -72 -75 -55 -327 -228 -400 -275 -22 -14 -56 -37 -77 -51 -49 -34 -333 -219 -513 -334 -77 -49 -183 -118 -236 -152 -53 -35 -98 -63 -100 -63 -2 0 -18 -10 -37 -22 -19 -13 -73 -48 -121 -78 -47 -30 -144 -93 -214 -139 -70 -45 -134 -86 -142 -90 -30 -12 -1006 -657 -1092 -721 -26 -19 -111 -80 -188 -135 -262 -186 -374 -269 -547 -405 -95 -74 -192 -149 -215 -167 -24 -17 -52 -40 -63 -50 -11 -10 -61 -52 -110 -93 -50 -41 -97 -81 -106 -90 -9 -8 -56 -51 -105 -94 -110 -99 -430 -418 -506 -506 -31 -36 -75 -85 -97 -110 -22 -25 -41 -48 -41 -51 0 -4 -23 -35 -51 -70 -68 -85 -208 -297 -253 -384 -20 -38 -41 -77 -46 -85 -15 -25 -50 -106 -50 -115 0 -5 -8 -27 -19 -49 -24 -54 -58 -161 -66 -211 -4 -22 -14 -62 -22 -90 -23 -70 -23 -377 0 -455 8 -30 18 -77 22 -105 4 -27 11 -54 15 -60 4 -5 13 -30 20 -55 12 -46 55 -161 71 -189 5 -9 13 -27 19 -41 5 -14 14 -32 20 -40 5 -8 42 -73 81 -144 40 -71 96 -161 125 -200 29 -39 70 -95 91 -125 201 -282 549 -591 768 -681 l50 -20 2690 2 2690 3 3 1278 c2 1241 2 1277 -17 1277 -10 0 -34 -12 -54 -27 -20 -16 -61 -46 -92 -68 -30 -22 -76 -55 -101 -73 -91 -67 -546 -366 -683 -449 -114 -69 -163 -99 -226 -139 -38 -24 -77 -47 -85 -51 -14 -6 -163 -91 -200 -113 -8 -5 -71 -41 -140 -80 -69 -39 -132 -75 -140 -80 -47 -28 -234 -131 -290 -159 -36 -18 -119 -62 -185 -97 -66 -35 -131 -68 -145 -74 -14 -5 -32 -14 -40 -19 -8 -5 -64 -35 -125 -66 -60 -31 -117 -61 -125 -65 -8 -5 -60 -30 -115 -55 -55 -25 -107 -50 -115 -56 -8 -5 -26 -14 -40 -20 -14 -5 -56 -25 -95 -43 -38 -19 -91 -43 -117 -55 -27 -12 -68 -30 -93 -41 -25 -11 -65 -29 -90 -40 -25 -11 -64 -29 -88 -40 -24 -11 -48 -20 -53 -20 -5 0 -31 -12 -59 -25 -27 -14 -55 -25 -62 -25 -6 0 -24 -7 -40 -15 -53 -27 -203 -87 -253 -100 -14 -4 -34 -13 -45 -19 -11 -7 -33 -16 -50 -20 -16 -4 -43 -13 -60 -21 -29 -13 -75 -29 -175 -60 -72 -22 -143 -45 -175 -56 -16 -6 -58 -17 -92 -24 -34 -8 -70 -18 -80 -23 -10 -6 -40 -13 -68 -17 -27 -4 -61 -12 -73 -16 -20 -8 -118 -23 -358 -54 -142 -19 -305 140 -336 328 -20 120 -6 314 27 378 8 15 15 36 15 45 0 17 7 34 70 164 112 233 359 536 660 808 58 52 119 107 135 122 60 54 458 369 523 414 66 46 84 59 258 186 135 99 551 385 684 470 22 14 56 37 77 51 21 14 315 210 653 435 338 225 620 414 626 420 7 6 70 50 140 98 71 48 156 107 189 132 33 24 76 55 95 69 49 35 108 78 225 164 94 70 440 346 475 380 9 9 81 75 161 148 79 72 155 144 168 160 13 15 54 60 90 98 36 39 80 87 97 105 43 49 186 239 204 272 8 15 36 64 63 108 26 44 47 83 47 87 0 4 9 25 19 47 78 166 95 245 99 466 1 102 -2 221 -7 265 -22 164 -39 274 -46 285 -3 6 -11 41 -16 78 -5 37 -15 83 -23 102 -17 42 -42 117 -61 184 -8 27 -19 54 -24 59 -6 6 -11 17 -11 25 0 8 -34 84 -76 169 -107 215 -249 425 -414 607 -85 94 -261 259 -346 324 -38 29 -107 82 -153 117 -46 36 -88 65 -92 65 -4 0 -37 19 -72 43 -134 87 -186 116 -352 197 -217 105 -250 120 -264 120 -6 0 -28 9 -48 20 -21 11 -42 20 -48 20 -6 0 -28 9 -50 20 -22 11 -47 20 -57 20 -9 0 -32 6 -50 14 -43 19 -120 44 -184 60 -28 8 -59 18 -70 24 -10 5 -41 13 -69 17 -27 4 -64 13 -81 20 -17 7 -51 16 -75 20 -24 3 -64 13 -89 20 -25 8 -72 17 -105 20 -33 4 -85 13 -115 20 -30 8 -102 19 -160 25 -58 6 -127 16 -154 21 -61 11 -1229 10 -1276 -2z"/> </g></g><circle class="w3" cx="2690" cy="1990" r="18" fill="#f0682a"/></svg></div>
+
+<header class="top" id="top">
+  <div class="wrap">
+    <a class="logo" href="#hero" aria-label="A12 Studio, наверх"><svg viewBox="540 980 2160 1030" aria-hidden="true"><g class="m-a1" transform="translate(0,2020) scale(0.100000,-0.100000)" fill="#0f3473" stroke="none"> <path d="M17355 9980 c-22 -11 -46 -19 -53 -20 -6 0 -29 -9 -49 -20 -21 -11 -43 -20 -50 -20 -7 0 -32 -9 -55 -19 -62 -27 -135 -56 -203 -81 -33 -12 -73 -28 -90 -36 -28 -12 -57 -23 -160 -60 -22 -8 -48 -19 -57 -24 -10 -5 -34 -14 -55 -19 -21 -5 -69 -22 -108 -36 -38 -15 -92 -34 -120 -42 -27 -9 -55 -19 -60 -24 -6 -4 -29 -12 -50 -18 -22 -5 -71 -22 -110 -36 -38 -15 -90 -33 -115 -41 -25 -8 -54 -19 -65 -24 -11 -6 -45 -17 -75 -26 -137 -39 -156 -44 -175 -54 -11 -5 -38 -14 -60 -19 -40 -10 -115 -33 -170 -53 -16 -5 -48 -15 -70 -20 -22 -6 -61 -19 -87 -29 -26 -11 -56 -19 -68 -19 -12 0 -31 -5 -43 -12 -34 -18 -171 -56 -371 -103 -32 -7 -70 -18 -85 -24 -14 -6 -55 -17 -91 -25 -71 -16 -121 -28 -220 -56 -36 -9 -87 -23 -115 -29 -84 -20 -112 -49 -85 -91 8 -13 63 -16 357 -20 l348 -5 70 -34 c130 -64 205 -173 227 -331 8 -52 12 -1267 15 -3944 2 -3065 6 -3872 16 -3878 6 -4 503 -8 1103 -8 987 0 1092 2 1098 16 8 21 8 9267 0 9288 -9 22 -69 20 -119 -4z M8021 9871 c-25 -16 -1 -51 67 -95 81 -54 101 -72 150 -139 35 -49 82 -135 82 -152 0 -4 7 -21 15 -38 36 -77 68 -329 61 -477 -7 -145 -42 -449 -56 -485 -6 -15 -15 -59 -21 -99 -10 -71 -27 -143 -55 -226 -9 -25 -20 -64 -24 -88 -5 -23 -15 -52 -21 -64 -6 -12 -17 -44 -25 -72 -16 -66 -41 -134 -115 -318 -12 -29 -28 -71 -35 -93 -8 -22 -21 -53 -28 -70 -34 -73 -65 -144 -85 -187 -12 -27 -31 -69 -42 -95 -40 -89 -310 -627 -350 -698 -22 -38 -49 -88 -59 -110 -11 -22 -32 -60 -46 -85 -14 -25 -41 -74 -60 -110 -19 -36 -53 -96 -75 -135 -22 -38 -49 -88 -59 -110 -11 -22 -31 -58 -43 -80 -28 -48 -93 -166 -119 -215 -10 -19 -22 -42 -28 -50 -20 -32 -120 -213 -172 -310 -10 -19 -30 -53 -43 -75 -13 -22 -31 -53 -39 -70 -8 -16 -33 -61 -56 -100 -22 -38 -49 -88 -60 -110 -20 -39 -38 -72 -165 -310 -65 -123 -79 -150 -195 -390 -101 -210 -107 -224 -165 -360 -25 -60 -51 -118 -56 -129 -6 -10 -17 -37 -24 -60 -14 -43 -36 -104 -80 -221 -29 -79 -62 -195 -77 -270 -5 -27 -14 -58 -19 -68 -60 -110 -87 -722 -40 -908 11 -48 21 -98 21 -112 0 -14 8 -49 19 -79 10 -29 31 -90 45 -136 15 -46 31 -91 36 -100 5 -9 21 -46 36 -82 15 -36 33 -72 40 -80 7 -8 18 -28 24 -44 46 -122 350 -487 470 -564 14 -9 52 -38 85 -63 33 -25 74 -54 90 -63 17 -9 48 -27 70 -41 38 -23 164 -86 268 -133 26 -12 55 -22 65 -22 9 0 30 -7 46 -15 16 -8 54 -22 85 -30 31 -7 74 -18 96 -24 108 -28 189 -43 280 -51 241 -23 583 -13 715 20 41 11 113 29 160 41 47 12 139 48 206 81 67 32 124 58 128 58 9 0 97 66 167 127 58 49 109 141 109 196 0 12 9 48 20 80 11 31 20 64 20 74 0 10 9 45 19 78 11 33 24 78 30 100 17 71 33 129 48 180 9 28 21 75 28 105 17 70 34 132 52 195 9 28 21 75 28 105 17 70 34 132 52 195 9 28 21 75 28 105 17 70 34 132 52 195 9 28 21 75 28 105 17 70 34 132 52 195 9 28 21 75 28 105 17 70 34 132 52 195 9 28 21 75 28 105 14 59 27 108 55 210 18 64 40 147 81 298 11 42 29 106 39 142 21 74 36 131 55 210 7 30 19 78 28 105 8 28 20 73 27 100 7 28 21 79 31 115 10 36 23 85 29 110 7 25 20 74 30 110 10 36 23 83 29 105 19 75 33 130 48 180 9 28 21 75 28 105 18 73 34 132 55 205 10 33 21 76 24 95 8 44 46 140 56 140 9 0 20 -51 20 -94 0 -18 7 -58 15 -89 8 -32 19 -93 24 -135 6 -42 17 -115 26 -162 8 -47 24 -137 35 -200 11 -63 24 -142 30 -175 5 -33 15 -91 21 -130 6 -38 16 -95 24 -125 8 -30 16 -80 20 -110 6 -54 27 -160 66 -331 10 -47 19 -97 19 -111 0 -14 6 -44 14 -66 8 -22 17 -62 21 -89 3 -26 15 -86 25 -133 10 -47 29 -130 41 -185 11 -55 30 -136 41 -180 11 -44 29 -116 40 -160 28 -116 87 -326 115 -410 9 -27 20 -66 24 -85 4 -19 29 -93 54 -165 26 -71 53 -150 60 -175 12 -41 21 -65 60 -155 8 -16 25 -58 39 -92 58 -140 78 -185 157 -338 219 -430 502 -748 790 -888 292 -141 591 -137 924 13 105 47 286 140 405 208 30 18 66 37 80 44 14 7 45 26 70 43 25 17 70 46 100 64 30 18 75 45 100 61 25 16 52 33 60 37 15 8 167 106 222 144 15 11 30 19 33 19 3 0 27 15 53 34 27 18 62 41 78 50 16 9 43 25 59 36 17 11 46 29 65 40 19 11 47 28 62 38 49 32 138 82 145 82 5 1 22 12 38 25 49 40 28 56 -106 83 -63 12 -127 28 -144 36 -249 114 -392 225 -582 452 -44 52 -168 233 -185 269 -5 11 -20 38 -33 60 -42 71 -125 244 -178 370 -54 129 -67 164 -67 177 0 7 -7 26 -15 42 -9 16 -20 46 -25 65 -5 20 -15 56 -24 81 -8 25 -23 77 -34 115 -27 95 -56 196 -81 283 -99 342 -99 341 -135 522 -8 36 -20 92 -29 125 -8 33 -25 103 -36 155 -11 52 -26 115 -32 140 -6 25 -15 72 -21 105 -5 33 -18 96 -29 140 -10 45 -19 94 -19 110 0 17 -9 63 -20 104 -11 41 -20 88 -20 105 0 17 -9 64 -20 105 -11 41 -20 87 -20 103 0 15 -9 69 -19 120 -19 93 -31 161 -52 293 -6 39 -19 111 -29 160 -10 50 -23 119 -29 155 -13 76 -25 140 -51 265 -17 85 -29 148 -52 275 -5 30 -18 92 -29 138 -46 196 -61 260 -75 312 -9 30 -21 82 -29 115 -30 134 -37 163 -56 235 -11 41 -28 104 -39 140 -10 36 -28 97 -40 135 -32 108 -148 461 -164 497 -8 18 -24 60 -37 93 -12 33 -30 78 -40 101 -11 23 -19 48 -19 56 0 8 -4 18 -9 24 -5 5 -35 68 -66 139 -32 72 -61 135 -65 140 -5 6 -30 53 -57 105 -44 86 -91 164 -144 242 -11 15 -19 29 -19 32 0 8 -46 71 -127 177 -202 263 -448 453 -688 533 -38 13 -95 31 -125 42 -53 18 -112 19 -1340 21 -720 2 -1291 -1 -1299 -6z m935 -861 c119 -60 195 -139 278 -290 26 -47 51 -92 56 -100 26 -41 105 -196 160 -315 18 -38 48 -101 66 -140 18 -38 40 -88 48 -110 13 -37 23 -64 77 -197 12 -29 27 -73 35 -98 7 -25 21 -67 30 -95 10 -27 25 -72 35 -100 30 -90 68 -223 90 -325 6 -25 19 -74 29 -110 10 -36 22 -92 28 -125 6 -33 15 -91 22 -130 6 -38 18 -101 26 -140 8 -38 19 -128 24 -200 5 -71 14 -154 19 -183 16 -82 24 -588 12 -742 -14 -190 -29 -331 -52 -510 -11 -85 -19 -169 -19 -186 0 -17 -9 -64 -20 -105 -11 -41 -20 -90 -20 -109 0 -19 -9 -70 -19 -115 -10 -44 -24 -109 -30 -145 -11 -68 -21 -112 -53 -222 -10 -37 -28 -100 -39 -140 -11 -40 -29 -102 -39 -138 -10 -36 -23 -81 -29 -100 -5 -19 -21 -66 -36 -105 -14 -38 -30 -83 -35 -100 -6 -16 -17 -46 -26 -65 -9 -19 -25 -53 -34 -75 -27 -59 -119 -247 -133 -270 -148 -242 -277 -391 -423 -491 -60 -41 -164 -94 -184 -94 -6 0 -25 -7 -42 -16 -100 -52 -476 -31 -653 37 -28 10 -58 19 -67 19 -17 0 -184 84 -208 105 -8 7 -26 16 -38 20 -49 15 -240 214 -318 330 -40 62 -74 118 -74 124 0 7 -8 29 -19 49 -48 95 -64 140 -91 252 -46 197 -45 186 -44 475 1 163 6 309 13 350 7 39 16 102 21 140 6 39 16 99 24 135 8 36 19 94 25 130 6 36 20 97 30 135 11 39 25 90 31 115 6 25 20 72 30 105 10 33 21 77 25 97 3 20 12 50 20 65 8 15 15 37 15 48 0 11 9 38 20 60 11 22 20 49 20 60 0 11 9 38 20 60 11 22 19 48 20 58 0 11 7 33 14 50 15 33 49 126 68 187 5 19 17 44 24 55 8 11 14 27 14 37 0 10 8 37 19 60 10 24 24 59 31 78 32 91 42 117 54 145 7 17 19 46 26 65 7 19 18 53 26 75 8 22 19 48 25 59 6 10 17 37 24 60 7 22 23 66 35 96 12 30 30 78 40 105 10 28 28 75 40 105 12 30 30 79 41 108 38 104 58 158 84 227 14 39 30 84 35 100 5 17 32 95 60 175 28 80 57 165 64 190 8 25 19 59 24 75 16 43 46 138 71 225 13 41 30 98 38 125 9 28 22 75 29 105 18 78 33 136 55 206 11 33 19 68 19 77 0 9 7 38 16 64 9 26 22 73 30 103 43 188 120 382 177 446 51 58 118 62 213 14z"/> </g> <g class="m-2" transform="translate(0,2020) scale(0.100000,-0.100000)" fill="currentColor" stroke="none"> <path d="M21880 9979 c-19 -4 -87 -13 -150 -19 -63 -6 -158 -17 -210 -25 -52 -8 -124 -19 -160 -24 -81 -12 -199 -37 -265 -55 -27 -8 -72 -17 -100 -21 -27 -3 -70 -12 -95 -20 -25 -7 -65 -17 -90 -20 -25 -4 -54 -12 -64 -17 -11 -6 -42 -16 -70 -23 -28 -7 -67 -18 -86 -25 -19 -7 -57 -20 -85 -30 -146 -51 -276 -102 -305 -121 -8 -5 -24 -12 -34 -16 -19 -6 -95 -45 -220 -112 -32 -17 -80 -47 -105 -65 -25 -19 -64 -46 -86 -60 -177 -119 -376 -357 -441 -527 -28 -75 -64 -260 -64 -334 0 -71 29 -243 55 -325 7 -25 17 -65 20 -90 4 -25 12 -50 17 -57 5 -7 16 -34 23 -60 30 -104 81 -244 109 -298 9 -17 16 -34 16 -39 0 -5 9 -29 20 -53 11 -24 29 -64 41 -90 11 -27 24 -55 29 -63 5 -8 35 -66 67 -128 32 -62 64 -123 71 -136 6 -13 36 -60 65 -105 28 -44 65 -102 82 -128 100 -162 399 -493 445 -493 13 0 45 39 105 129 120 182 265 374 355 471 8 9 47 54 87 100 139 165 450 459 668 635 55 44 107 87 117 95 27 24 40 34 93 71 28 19 93 66 145 105 120 88 349 239 425 279 17 9 48 27 70 40 22 14 54 32 70 41 17 8 48 26 70 39 49 28 363 185 428 214 177 79 254 111 263 111 9 0 96 32 149 55 41 18 119 43 180 59 28 7 59 17 70 23 11 6 40 14 65 18 25 4 56 13 70 20 14 7 49 16 79 20 30 4 68 13 85 20 17 7 56 16 86 19 30 4 78 13 105 21 28 7 88 16 134 20 46 4 113 13 150 21 81 17 515 20 558 3 15 -6 57 -16 93 -24 206 -43 393 -153 515 -304 30 -37 55 -72 55 -77 0 -5 9 -25 19 -45 25 -47 45 -179 36 -248 -13 -115 -93 -238 -265 -411 -103 -103 -387 -343 -490 -413 -14 -9 -59 -42 -100 -72 -75 -55 -327 -228 -400 -275 -22 -14 -56 -37 -77 -51 -49 -34 -333 -219 -513 -334 -77 -49 -183 -118 -236 -152 -53 -35 -98 -63 -100 -63 -2 0 -18 -10 -37 -22 -19 -13 -73 -48 -121 -78 -47 -30 -144 -93 -214 -139 -70 -45 -134 -86 -142 -90 -30 -12 -1006 -657 -1092 -721 -26 -19 -111 -80 -188 -135 -262 -186 -374 -269 -547 -405 -95 -74 -192 -149 -215 -167 -24 -17 -52 -40 -63 -50 -11 -10 -61 -52 -110 -93 -50 -41 -97 -81 -106 -90 -9 -8 -56 -51 -105 -94 -110 -99 -430 -418 -506 -506 -31 -36 -75 -85 -97 -110 -22 -25 -41 -48 -41 -51 0 -4 -23 -35 -51 -70 -68 -85 -208 -297 -253 -384 -20 -38 -41 -77 -46 -85 -15 -25 -50 -106 -50 -115 0 -5 -8 -27 -19 -49 -24 -54 -58 -161 -66 -211 -4 -22 -14 -62 -22 -90 -23 -70 -23 -377 0 -455 8 -30 18 -77 22 -105 4 -27 11 -54 15 -60 4 -5 13 -30 20 -55 12 -46 55 -161 71 -189 5 -9 13 -27 19 -41 5 -14 14 -32 20 -40 5 -8 42 -73 81 -144 40 -71 96 -161 125 -200 29 -39 70 -95 91 -125 201 -282 549 -591 768 -681 l50 -20 2690 2 2690 3 3 1278 c2 1241 2 1277 -17 1277 -10 0 -34 -12 -54 -27 -20 -16 -61 -46 -92 -68 -30 -22 -76 -55 -101 -73 -91 -67 -546 -366 -683 -449 -114 -69 -163 -99 -226 -139 -38 -24 -77 -47 -85 -51 -14 -6 -163 -91 -200 -113 -8 -5 -71 -41 -140 -80 -69 -39 -132 -75 -140 -80 -47 -28 -234 -131 -290 -159 -36 -18 -119 -62 -185 -97 -66 -35 -131 -68 -145 -74 -14 -5 -32 -14 -40 -19 -8 -5 -64 -35 -125 -66 -60 -31 -117 -61 -125 -65 -8 -5 -60 -30 -115 -55 -55 -25 -107 -50 -115 -56 -8 -5 -26 -14 -40 -20 -14 -5 -56 -25 -95 -43 -38 -19 -91 -43 -117 -55 -27 -12 -68 -30 -93 -41 -25 -11 -65 -29 -90 -40 -25 -11 -64 -29 -88 -40 -24 -11 -48 -20 -53 -20 -5 0 -31 -12 -59 -25 -27 -14 -55 -25 -62 -25 -6 0 -24 -7 -40 -15 -53 -27 -203 -87 -253 -100 -14 -4 -34 -13 -45 -19 -11 -7 -33 -16 -50 -20 -16 -4 -43 -13 -60 -21 -29 -13 -75 -29 -175 -60 -72 -22 -143 -45 -175 -56 -16 -6 -58 -17 -92 -24 -34 -8 -70 -18 -80 -23 -10 -6 -40 -13 -68 -17 -27 -4 -61 -12 -73 -16 -20 -8 -118 -23 -358 -54 -142 -19 -305 140 -336 328 -20 120 -6 314 27 378 8 15 15 36 15 45 0 17 7 34 70 164 112 233 359 536 660 808 58 52 119 107 135 122 60 54 458 369 523 414 66 46 84 59 258 186 135 99 551 385 684 470 22 14 56 37 77 51 21 14 315 210 653 435 338 225 620 414 626 420 7 6 70 50 140 98 71 48 156 107 189 132 33 24 76 55 95 69 49 35 108 78 225 164 94 70 440 346 475 380 9 9 81 75 161 148 79 72 155 144 168 160 13 15 54 60 90 98 36 39 80 87 97 105 43 49 186 239 204 272 8 15 36 64 63 108 26 44 47 83 47 87 0 4 9 25 19 47 78 166 95 245 99 466 1 102 -2 221 -7 265 -22 164 -39 274 -46 285 -3 6 -11 41 -16 78 -5 37 -15 83 -23 102 -17 42 -42 117 -61 184 -8 27 -19 54 -24 59 -6 6 -11 17 -11 25 0 8 -34 84 -76 169 -107 215 -249 425 -414 607 -85 94 -261 259 -346 324 -38 29 -107 82 -153 117 -46 36 -88 65 -92 65 -4 0 -37 19 -72 43 -134 87 -186 116 -352 197 -217 105 -250 120 -264 120 -6 0 -28 9 -48 20 -21 11 -42 20 -48 20 -6 0 -28 9 -50 20 -22 11 -47 20 -57 20 -9 0 -32 6 -50 14 -43 19 -120 44 -184 60 -28 8 -59 18 -70 24 -10 5 -41 13 -69 17 -27 4 -64 13 -81 20 -17 7 -51 16 -75 20 -24 3 -64 13 -89 20 -25 8 -72 17 -105 20 -33 4 -85 13 -115 20 -30 8 -102 19 -160 25 -58 6 -127 16 -154 21 -61 11 -1229 10 -1276 -2z"/> </g> </svg></a>
+    <nav aria-label="Разделы сайта">
+      <a href="#podhod">Подход</a>
+      <a href="#uslugi">Услуги</a>
+      <a href="#start">Как начать</a>
+      <a href="#primery">Примеры</a>
+      <a href="#contact">Контакты</a>
+    </nav>
+    <a class="pill" href="https://t.me/A12STUDIO" target="_blank" rel="noopener">Telegram <span aria-hidden="true">→</span></a>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="hero">
+  <div class="cat" id="cat" role="img" aria-label="Синий кот, персонаж студии, следит глазами за курсором">
+    <svg viewBox="0 0 1900 1300" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <radialGradient id="ball" cx=".5" cy=".44" r=".62"><stop offset="0" stop-color="#fbf9f7"/><stop offset=".55" stop-color="#f0ece8"/><stop offset=".85" stop-color="#d9d3d1"/><stop offset="1" stop-color="#bdb6ba"/></radialGradient>
+        <mask id="face" maskUnits="userSpaceOnUse" x="0" y="0" width="1900" height="1300"><image href="assets/face-holes.png" width="1900" height="1300"/></mask>
+      </defs>
+      <!-- слой 1: глазные яблоки (белок + радужка), двигаются под мордочкой -->
+      <g id="ballL"><ellipse cx="686" cy="701" rx="196" ry="132" fill="url(#ball)"/><image class="iris" href="assets/eyeball-iris-L.png" x="660" y="627" width="148" height="148"/></g>
+      <g id="ballR"><ellipse cx="1196" cy="702" rx="196" ry="132" fill="url(#ball)"/><image class="iris" href="assets/eyeball-iris-R.png" x="1075" y="629" width="148" height="148"/></g>
+      <image href="assets/eye-ao.png" x="480" y="580" width="920" height="250"/>
+      <!-- слой 2: исходная мордочка с прорезями глаз -->
+      <image href="assets/face.jpg" width="1900" height="1300" mask="url(#face)"/>
+    </svg>
+  </div>
+  <div class="wrap">
+    <div class="txt">
+      <div class="eyebrow label">A12 Studio<span class="dot"></span></div>
+      <h1>ИИ&#8209;контент под <span class="acc">маркетинговые задачи</span> бизнеса</h1>
+      <p>Соединяем маркетинг и ИИ-продакшен: контент для соцсетей и рекламы, который привлекает внимание, объясняет ценность и помогает продавать.</p>
+      <div><a class="pill" href="https://t.me/A12STUDIO" target="_blank" rel="noopener">Обсудить задачу <span aria-hidden="true">→</span></a></div>
+    </div>
+    <ul class="keys" id="keys" aria-label="Чем мы отличаемся">
+      <li data-d="10">Маркетинг в основе</li>
+      <li data-d="-14">Исследование аудитории</li>
+      <li data-d="7">Свои персонажи и миры</li>
+      <li data-d="-9">Анимация уровня кино</li>
+      <li data-d="12">Тесты и данные</li>
+    </ul>
+  </div>
+</section>
+
+<section class="block has-bgv" id="podhod">
+  <video class="bgv" src="assets/girl-cat-cards.mp4" poster="assets/girl-cat-cards.jpg" autoplay muted loop playsinline aria-label="Майя работает за ноутбуком, вокруг летают письма, кот ловит одно лапой"></video>
+  <div class="wrap"><div class="over">
+    <div class="sec-title"><h2>Наш <span class="acc">подход</span></h2></div>
+    <p class="lead-p">В основе — <b>исследование продукта и аудитории</b>, которое определяет содержание, сценарий и подачу. Работаем с брендами, экспертами и агентствами.</p>
+    <ol class="steps">
+      <li><span class="n">01</span><div><h3>Анализируем продукт и аудиторию</h3><p>Изучаем, что важно вашим клиентам, какие у них сомнения и что влияет на их выбор.</p></div></li>
+      <li><span class="n">02</span><div><h3>Формируем смыслы и сценарий</h3><p>Определяем, что сказать и как подать, чтобы контент решал задачу бизнеса, а не просто заполнял ленту.</p></div></li>
+      <li><span class="n">03</span><div><h3>Производим контент</h3><p>Подбираем ИИ-инструменты под задачу: под нужное качество картинки, анимацию и сроки.</p></div></li>
+      <li><span class="n">04</span><div><h3>Тестируем и дорабатываем</h3><p>Анализируем данные размещения и на их основе создаём следующие версии.</p></div></li>
+    </ol>
+  </div></div>
+</section>
+
+<section class="block" id="uslugi">
+  <div class="wrap">
+    <div class="sec-title"><h2><span class="acc">Услуги</span></h2><p>Четыре направления. В каждом — производство по вашему ТЗ или маркетинговая разработка с нуля.</p></div>
+  <details class="svc" name="svc">
+    <summary><span class="n">01</span><span class="t"><h3>Брендовые ИИ-сериалы</h3><p>Серия коротких видео с единой концепцией, персонажами и узнаваемым стилем.</p></span><span class="plus" aria-hidden="true"></span></summary>
+    <div class="body">
+      <ul class="facts"><li><span>Сроки</span><b>2–4 недели</b></li><li><span>Стоимость</span><b>После брифинга</b></li><li><span>Форматы</span><b>2 на выбор</b></li></ul>
+      <div class="lead-row"><p class="lede">Вместо разовых роликов — <b>история, которую можно продолжать</b>, адаптировать под разные площадки и использовать на разных этапах: от знакомства с брендом до решения о покупке.</p><div class="who"><h4>Кому подходит</h4><ul><li>Брендам, которые строят узнаваемость и лояльность</li><li>Продуктам со сложным смыслом, который нужно объяснить через историю, а не через текст</li><li>Тем, кто хочет выделяться на фоне однотипного контента</li></ul></div></div>
+      <div class="fmts">
+        <input type="radio" name="fmt0" id="fmt0a" checked><input type="radio" name="fmt0" id="fmt0b">
+        <div class="tabs" role="presentation"><label for="fmt0a"><small>Формат 1 · Есть концепция</small>Производство</label><label for="fmt0b"><small>Формат 2 · Строим с нуля</small>Маркетинговая разработка и производство</label></div>
+        <div class="panel pa"><div class="ptop"><h5>Производство</h5><p>Если у вас уже есть концепция, стиль и направление сюжетов, мы берём это за основу и производим серии.</p></div><div><h4>Что входит</h4><ol class="incl"><li>Брифинг и постановка задачи</li><li>Сценарии эпизодов по вашей концепции</li><li>Раскадровки</li><li>Генерация, ИИ-анимация и монтаж</li><li>Звуковое оформление</li></ol></div></div>
+        <div class="panel pb"><div class="ptop"><h5>Маркетинговая разработка и производство</h5><p>Изучаем продукт и аудиторию, определяем роль сериала в коммуникации бренда. Строим сериал с нуля: от смыслов до финальных роликов.</p></div><div><h4>Что входит</h4><ol class="incl"><li>Брифинг и постановка задачи</li><li>Исследование продукта и целевой аудитории</li><li>Определение роли сериала в коммуникации бренда</li><li>Разработка смысловой основы и направлений сюжетов (с учётом задач бизнеса)</li><li>Создание уникального стиля для персонажей и мира сериала</li><li>Разработка сюжетной арки (от одной до нескольких серий)</li><li>Сценарии эпизодов</li><li>Раскадровки</li><li>Генерация, ИИ-анимация и монтаж</li><li>Звуковое оформление</li></ol><p class="note">В маркетинговую разработку могут входить карта смыслов, контентная воронка и рубрикатор сюжетов. Состав работ определяем под задачу.</p></div></div>
+      </div>
+      <div class="meta"><div><h4>Сроки — 2–4 недели</h4><p>Запуск с нуля — от брифинга до готовности первых эпизодов. Сроки зависят от сложности концепции, количества серий и скорости согласований.</p></div><div><h4>Стоимость — индивидуально</h4><p>Зависит от формата работы, количества серий, длительности роликов и сложности визуального стиля. Точный расчёт — после брифинга в коммерческом предложении.</p></div>
+        <a class="pill" href="https://t.me/A12STUDIO" target="_blank" rel="noopener">Обсудить сериал <span aria-hidden="true">→</span></a></div>
+    </div>
+  </details>
+  <details class="svc" name="svc">
+    <summary><span class="n">02</span><span class="t"><h3>Рекламные ИИ-креативы</h3><p>Видеокреативы под разные сегменты, офферы и задачи кампании.</p></span><span class="plus" aria-hidden="true"></span></summary>
+    <div class="body">
+      <ul class="facts"><li><span>Сроки</span><b>2–4 недели</b></li><li><span>Стоимость</span><b>После брифинга</b></li><li><span>Форматы</span><b>2 на выбор</b></li></ul>
+      <div class="lead-row"><p class="lede">В креатив закладываем <b>смысл и сюжет</b>, опираясь на маркетинговый анализ, — чтобы он привлекал внимание целевой аудитории и подводил к действию.</p><div class="who"><h4>Кому подходит</h4><ul><li>Бизнесу в конкурентных нишах, где рекламные макеты быстро «выгорают»</li><li>Продуктам с несколькими сегментами аудитории, когда нужно одновременно проверить разные офферы</li><li>Командам со своими таргетологами, которым нужен постоянный поток свежих визуалов и офферов</li></ul></div></div>
+      <div class="fmts">
+        <input type="radio" name="fmt1" id="fmt1a" checked><input type="radio" name="fmt1" id="fmt1b">
+        <div class="tabs" role="presentation"><label for="fmt1a"><small>Формат 1 · Есть ТЗ</small>Производство</label><label for="fmt1b"><small>Формат 2 · Строим с нуля</small>Маркетинговая разработка и производство</label></div>
+        <div class="panel pa"><div class="ptop"><h5>Производство</h5><p>Мы производим креативы по согласованному ТЗ.</p></div><div><h4>Что входит</h4><ol class="incl"><li>Брифинг и постановка задачи</li><li>Раскадровки</li><li>Производство видеокреативов по вашему сценарию</li></ol></div></div>
+        <div class="panel pb"><div class="ptop"><h5>Маркетинговая разработка и производство</h5><p>Мы разбираем вашу аудиторию, формируем офферы и гипотезы, пишем сценарии и производим креативы в нескольких вариантах для тестов.</p></div><div><h4>Что входит</h4><ol class="incl"><li>Брифинг и постановка задачи</li><li>Анализ продукта и рекламной задачи</li><li>Исследование аудитории (боли, ценности, возражения, триггеры)</li><li>Разработка рекламных сообщений и гипотез для тестирования</li><li>Создание сценариев</li><li>Раскадровки</li><li>Производство видеокреативов</li></ol><p class="note">При продолжении сотрудничества анализируем данные рекламных тестов от вашей команды и разрабатываем следующие версии креативов.</p></div></div>
+      </div>
+      <div class="meta"><div><h4>Сроки — 2–4 недели</h4><p>Запуск с нуля — от брифинга до готовности первых креативов. Сроки зависят от количества креативов и вариаций, глубины маркетинговой проработки и скорости согласований.</p></div><div><h4>Стоимость — индивидуально</h4><p>Зависит от формата работы, количества креативов, вариаций и сложности производства. Точный расчёт — после брифинга в коммерческом предложении.</p></div>
+        <a class="pill" href="https://t.me/A12STUDIO" target="_blank" rel="noopener">Обсудить рекламные креативы <span aria-hidden="true">→</span></a></div>
+    </div>
+  </details>
+  <details class="svc" name="svc">
+    <summary><span class="n">03</span><span class="t"><h3>ИИ-креативы под индивидуальную задачу</h3><p>Один ролик или пакет креативов для нестандартных и визуально сложных концепций.</p></span><span class="plus" aria-hidden="true"></span></summary>
+    <div class="body">
+      <ul class="facts"><li><span>Сроки</span><b>2–4 недели</b></li><li><span>Стоимость</span><b>После брифинга</b></li><li><span>Форматы</span><b>2 на выбор</b></li></ul>
+      <div class="lead-row"><p class="lede">Если у вас есть идея, и ей нужна форма. <b>Реализуем её с помощью ИИ</b>: один ролик или пакет креативов под конкретную задачу. Подходит для нестандартных и визуально сложных концепций.</p><div class="who"><h4>Когда подходит</h4><ul><li>У бренда или эксперта уже есть идея и нужна команда, которая её воплотит</li><li>Для запуска, спецпроекта, акции или инфоповода</li><li>Для концепций, которые сложно снять камерой: сюрреалистичные сюжеты, вымышленные миры и персонажи, визуальные эффекты</li></ul></div></div>
+      <div class="fmts">
+        <input type="radio" name="fmt2" id="fmt2a" checked><input type="radio" name="fmt2" id="fmt2b">
+        <div class="tabs" role="presentation"><label for="fmt2a"><small>Формат 1 · Есть идея и ТЗ</small>Производство</label><label for="fmt2b"><small>Формат 2 · Доработаем идею</small>Маркетинговая разработка и производство</label></div>
+        <div class="panel pa"><div class="ptop"><h5>Производство</h5><p>У вас уже есть идея, сценарий или референсы. Мы производим креатив по согласованному ТЗ.</p></div><div><h4>Что входит</h4><ol class="incl"><li>Брифинг и постановка задачи</li><li>Раскадровка</li><li>Генерация, ИИ-анимация и монтаж</li><li>Звуковое оформление</li></ol></div></div>
+        <div class="panel pb"><div class="ptop"><h5>Маркетинговая разработка и производство</h5><p>У вас есть задача или идея. Мы дорабатываем её до концепции, которая работает на цель бизнеса, и производим креатив.</p></div><div><h4>Что входит</h4><ol class="incl"><li>Брифинг и постановка задачи</li><li>Анализ продукта и аудитории</li><li>Доработка идеи: смысл, подача, точки внимания</li><li>Сценарий и раскадровка</li><li>Генерация, ИИ-анимация и монтаж</li><li>Звуковое оформление</li></ol></div></div>
+      </div>
+      <div class="meta"><div><h4>Сроки — 2–4 недели</h4><p>От брифинга до готовности. Сроки зависят от сложности идеи, количества креативов и скорости согласований.</p></div><div><h4>Стоимость — индивидуально</h4><p>Зависит от формата работы, количества креативов, длительности и сложности визуального решения. Точный расчёт — после брифинга в коммерческом предложении.</p></div>
+        <a class="pill" href="https://t.me/A12STUDIO" target="_blank" rel="noopener">Обсудить идею <span aria-hidden="true">→</span></a></div>
+    </div>
+  </details>
+  <details class="svc" name="svc">
+    <summary><span class="n">04</span><span class="t"><h3>ИИ-аватар</h3><p>Ваш цифровой двойник или персонаж бренда для регулярных видео.</p></span><span class="plus" aria-hidden="true"></span></summary>
+    <div class="body">
+      <ul class="facts"><li><span>Сроки</span><b>2–4 недели</b></li><li><span>Стоимость</span><b>После брифинга</b></li><li><span>Форматы</span><b>2 на выбор</b></li></ul>
+      <div class="lead-row"><p class="lede">Разрабатываем цифрового аватара и создаём контент для регулярных публикаций — <b>без необходимости сниматься в каждом ролике</b>. Подходит экспертам, спикерам и брендам, которым нужен постоянный поток видео: экспертные и объясняющие ролики, продуктовые видео, обучающие серии, контент для соцсетей.</p><div class="who"><h4>Создаём</h4><ul><li>Цифрового двойника по вашему видео и голосу</li><li>Вымышленного персонажа бренда, если публичная личность не нужна</li></ul></div></div>
+      <div class="fmts">
+        <input type="radio" name="fmt3" id="fmt3a" checked><input type="radio" name="fmt3" id="fmt3b">
+        <div class="tabs" role="presentation"><label for="fmt3a"><small>Формат 1 · Есть ТЗ и сценарии</small>Производство</label><label for="fmt3b"><small>Формат 2 · Строим с нуля</small>Маркетинговая разработка и производство</label></div>
+        <div class="panel pa"><div class="ptop"><h5>Производство</h5><p>Мы создаём аватара и производим согласованный объём роликов по вашему ТЗ и сценариям.</p></div><div><h4>Что входит</h4><ol class="incl"><li>Брифинг и постановка задачи</li><li>Разработка ИИ-аватара</li><li>Раскадровки</li><li>Производство роликов по вашему сценарию</li></ol></div></div>
+        <div class="panel pb"><div class="ptop"><h5>Маркетинговая разработка и производство</h5><p>Определяем, какие темы и форматы нужны для ваших задач, разрабатываем сценарии, создаём аватара и производим контент — разово или регулярно.</p></div><div><h4>Что входит</h4><ol class="incl"><li>Брифинг и постановка задачи</li><li>Определение тем и форматов под ваши задачи</li><li>Создание сценариев</li><li>Разработка ИИ-аватара</li><li>Раскадровки</li><li>Производство роликов</li></ol></div></div>
+      </div>
+      <div class="meta"><div><h4>Сроки — 2–4 недели</h4><p>Запуск с нуля — от брифинга до готовности первых роликов. Сроки зависят от количества роликов, сложности аватара и скорости согласований.</p></div><div><h4>Стоимость — индивидуально</h4><p>Зависит от формата работы, количества материалов и сложности производства. Точный расчёт — после брифинга в коммерческом предложении.</p></div>
+        <a class="pill" href="https://t.me/A12STUDIO" target="_blank" rel="noopener">Обсудить ИИ-аватар <span aria-hidden="true">→</span></a></div>
+    </div>
+  </details>
+
+  </div>
+</section>
+
+<section class="block has-bgv media-left" id="start">
+  <video class="bgv" src="assets/girl-window.mp4" poster="assets/girl-window.jpg" autoplay muted loop playsinline aria-label="Майя с ноутбуком у панорамного окна, день сменяется ночью"></video>
+  <div class="wrap"><div class="over">
+    <div class="sec-title"><h2>Как начать <span class="acc">работу</span></h2></div>
+    <ol class="steps">
+      <li><span class="n">01</span><div><h3>Напишите нам</h3><p>Расскажите коротко, какая у вас задача и что хотите получить. Это поможет понять, подходим ли мы друг другу.</p></div></li>
+      <li><span class="n">02</span><div><h3>Брифинг или созвон</h3><p>Обсуждаем детали: задачу бизнеса, аудиторию, формат контента и ваши ожидания.</p></div></li>
+      <li><span class="n">03</span><div><h3>Коммерческое предложение</h3><p>Готовим КП с составом работ, сроками и стоимостью под вашу задачу.</p></div></li>
+      <li><span class="n">04</span><div><h3>Старт проекта</h3><p>Согласовываем условия, оформляем документы и приступаем к работе.</p></div></li>
+    </ol>
+    <a class="go" href="https://t.me/A12STUDIO" target="_blank" rel="noopener">Написать в Telegram <span aria-hidden="true">→</span></a>
+  </div></div>
+</section>
+
+<section class="block has-bgv" id="primery">
+  <video class="bgv" src="assets/maya-enters.mp4" poster="assets/maya-enters.jpg" autoplay muted loop playsinline aria-label="Майя заходит, открывает ноутбук, вокруг разлетаются письма"></video>
+  <div class="wrap"><div class="over">
+    <div class="sec-title"><h2>Примеры <span class="acc">работ</span></h2></div>
+    <p>Клиентские проекты защищены NDA, поэтому мы не публикуем их открыто. <b>По запросу пришлём примеры</b>, близкие к вашей задаче, и расскажем, как строилась работа.</p>
+    <p>Собственные проекты студии — в нашем Instagram и Pinterest.</p>
+    <div class="links">
+      <a class="go" href="https://www.instagram.com/ai2_studio" target="_blank" rel="noopener">Instagram <span aria-hidden="true">↗</span></a>
+      <a class="go" href="https://ru.pinterest.com/A12_studio/" target="_blank" rel="noopener">Pinterest <span aria-hidden="true">↗</span></a>
+    </div>
+  </div></div>
+</section>
+
+<section class="block" id="contact">
+  <div class="wrap final">
+    <div class="txt">
+      <h2>Готовы создать контент, который <span class="acc">работает</span> на ваш бизнес?</h2>
+      <p>Напишите в Telegram или на почту — обсудим вашу задачу и подберём формат работы.</p>
+      <div class="row">
+        <a class="pill" href="https://t.me/A12STUDIO" target="_blank" rel="noopener">Написать в Telegram <span aria-hidden="true">→</span></a>
+        <div class="mail">
+          <button class="go" type="button" aria-expanded="false" aria-controls="mailmenu">Написать на почту <span aria-hidden="true">→</span></button>
+          <div class="mailmenu" id="mailmenu" hidden>
+            <a data-mail="app" href="#">Почтовая программа</a>
+            <a data-mail="gmail" href="#" target="_blank" rel="noopener">Открыть в Gmail</a>
+            <a data-mail="yandex" href="#" target="_blank" rel="noopener">Открыть в Яндекс Почте</a>
+            <button type="button" data-mail="copy">Скопировать адрес</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <video src="assets/cat-wink.mp4" poster="assets/cat-wink.jpg" autoplay muted loop playsinline aria-label="Кот выглядывает из-за края и подмигивает"></video>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <svg viewBox="540 980 2160 1030" role="img" aria-label="A12 Studio"><g class="m-a1" transform="translate(0,2020) scale(0.100000,-0.100000)" fill="#0f3473" stroke="none"> <path d="M17355 9980 c-22 -11 -46 -19 -53 -20 -6 0 -29 -9 -49 -20 -21 -11 -43 -20 -50 -20 -7 0 -32 -9 -55 -19 -62 -27 -135 -56 -203 -81 -33 -12 -73 -28 -90 -36 -28 -12 -57 -23 -160 -60 -22 -8 -48 -19 -57 -24 -10 -5 -34 -14 -55 -19 -21 -5 -69 -22 -108 -36 -38 -15 -92 -34 -120 -42 -27 -9 -55 -19 -60 -24 -6 -4 -29 -12 -50 -18 -22 -5 -71 -22 -110 -36 -38 -15 -90 -33 -115 -41 -25 -8 -54 -19 -65 -24 -11 -6 -45 -17 -75 -26 -137 -39 -156 -44 -175 -54 -11 -5 -38 -14 -60 -19 -40 -10 -115 -33 -170 -53 -16 -5 -48 -15 -70 -20 -22 -6 -61 -19 -87 -29 -26 -11 -56 -19 -68 -19 -12 0 -31 -5 -43 -12 -34 -18 -171 -56 -371 -103 -32 -7 -70 -18 -85 -24 -14 -6 -55 -17 -91 -25 -71 -16 -121 -28 -220 -56 -36 -9 -87 -23 -115 -29 -84 -20 -112 -49 -85 -91 8 -13 63 -16 357 -20 l348 -5 70 -34 c130 -64 205 -173 227 -331 8 -52 12 -1267 15 -3944 2 -3065 6 -3872 16 -3878 6 -4 503 -8 1103 -8 987 0 1092 2 1098 16 8 21 8 9267 0 9288 -9 22 -69 20 -119 -4z M8021 9871 c-25 -16 -1 -51 67 -95 81 -54 101 -72 150 -139 35 -49 82 -135 82 -152 0 -4 7 -21 15 -38 36 -77 68 -329 61 -477 -7 -145 -42 -449 -56 -485 -6 -15 -15 -59 -21 -99 -10 -71 -27 -143 -55 -226 -9 -25 -20 -64 -24 -88 -5 -23 -15 -52 -21 -64 -6 -12 -17 -44 -25 -72 -16 -66 -41 -134 -115 -318 -12 -29 -28 -71 -35 -93 -8 -22 -21 -53 -28 -70 -34 -73 -65 -144 -85 -187 -12 -27 -31 -69 -42 -95 -40 -89 -310 -627 -350 -698 -22 -38 -49 -88 -59 -110 -11 -22 -32 -60 -46 -85 -14 -25 -41 -74 -60 -110 -19 -36 -53 -96 -75 -135 -22 -38 -49 -88 -59 -110 -11 -22 -31 -58 -43 -80 -28 -48 -93 -166 -119 -215 -10 -19 -22 -42 -28 -50 -20 -32 -120 -213 -172 -310 -10 -19 -30 -53 -43 -75 -13 -22 -31 -53 -39 -70 -8 -16 -33 -61 -56 -100 -22 -38 -49 -88 -60 -110 -20 -39 -38 -72 -165 -310 -65 -123 -79 -150 -195 -390 -101 -210 -107 -224 -165 -360 -25 -60 -51 -118 -56 -129 -6 -10 -17 -37 -24 -60 -14 -43 -36 -104 -80 -221 -29 -79 -62 -195 -77 -270 -5 -27 -14 -58 -19 -68 -60 -110 -87 -722 -40 -908 11 -48 21 -98 21 -112 0 -14 8 -49 19 -79 10 -29 31 -90 45 -136 15 -46 31 -91 36 -100 5 -9 21 -46 36 -82 15 -36 33 -72 40 -80 7 -8 18 -28 24 -44 46 -122 350 -487 470 -564 14 -9 52 -38 85 -63 33 -25 74 -54 90 -63 17 -9 48 -27 70 -41 38 -23 164 -86 268 -133 26 -12 55 -22 65 -22 9 0 30 -7 46 -15 16 -8 54 -22 85 -30 31 -7 74 -18 96 -24 108 -28 189 -43 280 -51 241 -23 583 -13 715 20 41 11 113 29 160 41 47 12 139 48 206 81 67 32 124 58 128 58 9 0 97 66 167 127 58 49 109 141 109 196 0 12 9 48 20 80 11 31 20 64 20 74 0 10 9 45 19 78 11 33 24 78 30 100 17 71 33 129 48 180 9 28 21 75 28 105 17 70 34 132 52 195 9 28 21 75 28 105 17 70 34 132 52 195 9 28 21 75 28 105 17 70 34 132 52 195 9 28 21 75 28 105 17 70 34 132 52 195 9 28 21 75 28 105 17 70 34 132 52 195 9 28 21 75 28 105 14 59 27 108 55 210 18 64 40 147 81 298 11 42 29 106 39 142 21 74 36 131 55 210 7 30 19 78 28 105 8 28 20 73 27 100 7 28 21 79 31 115 10 36 23 85 29 110 7 25 20 74 30 110 10 36 23 83 29 105 19 75 33 130 48 180 9 28 21 75 28 105 18 73 34 132 55 205 10 33 21 76 24 95 8 44 46 140 56 140 9 0 20 -51 20 -94 0 -18 7 -58 15 -89 8 -32 19 -93 24 -135 6 -42 17 -115 26 -162 8 -47 24 -137 35 -200 11 -63 24 -142 30 -175 5 -33 15 -91 21 -130 6 -38 16 -95 24 -125 8 -30 16 -80 20 -110 6 -54 27 -160 66 -331 10 -47 19 -97 19 -111 0 -14 6 -44 14 -66 8 -22 17 -62 21 -89 3 -26 15 -86 25 -133 10 -47 29 -130 41 -185 11 -55 30 -136 41 -180 11 -44 29 -116 40 -160 28 -116 87 -326 115 -410 9 -27 20 -66 24 -85 4 -19 29 -93 54 -165 26 -71 53 -150 60 -175 12 -41 21 -65 60 -155 8 -16 25 -58 39 -92 58 -140 78 -185 157 -338 219 -430 502 -748 790 -888 292 -141 591 -137 924 13 105 47 286 140 405 208 30 18 66 37 80 44 14 7 45 26 70 43 25 17 70 46 100 64 30 18 75 45 100 61 25 16 52 33 60 37 15 8 167 106 222 144 15 11 30 19 33 19 3 0 27 15 53 34 27 18 62 41 78 50 16 9 43 25 59 36 17 11 46 29 65 40 19 11 47 28 62 38 49 32 138 82 145 82 5 1 22 12 38 25 49 40 28 56 -106 83 -63 12 -127 28 -144 36 -249 114 -392 225 -582 452 -44 52 -168 233 -185 269 -5 11 -20 38 -33 60 -42 71 -125 244 -178 370 -54 129 -67 164 -67 177 0 7 -7 26 -15 42 -9 16 -20 46 -25 65 -5 20 -15 56 -24 81 -8 25 -23 77 -34 115 -27 95 -56 196 -81 283 -99 342 -99 341 -135 522 -8 36 -20 92 -29 125 -8 33 -25 103 -36 155 -11 52 -26 115 -32 140 -6 25 -15 72 -21 105 -5 33 -18 96 -29 140 -10 45 -19 94 -19 110 0 17 -9 63 -20 104 -11 41 -20 88 -20 105 0 17 -9 64 -20 105 -11 41 -20 87 -20 103 0 15 -9 69 -19 120 -19 93 -31 161 -52 293 -6 39 -19 111 -29 160 -10 50 -23 119 -29 155 -13 76 -25 140 -51 265 -17 85 -29 148 -52 275 -5 30 -18 92 -29 138 -46 196 -61 260 -75 312 -9 30 -21 82 -29 115 -30 134 -37 163 -56 235 -11 41 -28 104 -39 140 -10 36 -28 97 -40 135 -32 108 -148 461 -164 497 -8 18 -24 60 -37 93 -12 33 -30 78 -40 101 -11 23 -19 48 -19 56 0 8 -4 18 -9 24 -5 5 -35 68 -66 139 -32 72 -61 135 -65 140 -5 6 -30 53 -57 105 -44 86 -91 164 -144 242 -11 15 -19 29 -19 32 0 8 -46 71 -127 177 -202 263 -448 453 -688 533 -38 13 -95 31 -125 42 -53 18 -112 19 -1340 21 -720 2 -1291 -1 -1299 -6z m935 -861 c119 -60 195 -139 278 -290 26 -47 51 -92 56 -100 26 -41 105 -196 160 -315 18 -38 48 -101 66 -140 18 -38 40 -88 48 -110 13 -37 23 -64 77 -197 12 -29 27 -73 35 -98 7 -25 21 -67 30 -95 10 -27 25 -72 35 -100 30 -90 68 -223 90 -325 6 -25 19 -74 29 -110 10 -36 22 -92 28 -125 6 -33 15 -91 22 -130 6 -38 18 -101 26 -140 8 -38 19 -128 24 -200 5 -71 14 -154 19 -183 16 -82 24 -588 12 -742 -14 -190 -29 -331 -52 -510 -11 -85 -19 -169 -19 -186 0 -17 -9 -64 -20 -105 -11 -41 -20 -90 -20 -109 0 -19 -9 -70 -19 -115 -10 -44 -24 -109 -30 -145 -11 -68 -21 -112 -53 -222 -10 -37 -28 -100 -39 -140 -11 -40 -29 -102 -39 -138 -10 -36 -23 -81 -29 -100 -5 -19 -21 -66 -36 -105 -14 -38 -30 -83 -35 -100 -6 -16 -17 -46 -26 -65 -9 -19 -25 -53 -34 -75 -27 -59 -119 -247 -133 -270 -148 -242 -277 -391 -423 -491 -60 -41 -164 -94 -184 -94 -6 0 -25 -7 -42 -16 -100 -52 -476 -31 -653 37 -28 10 -58 19 -67 19 -17 0 -184 84 -208 105 -8 7 -26 16 -38 20 -49 15 -240 214 -318 330 -40 62 -74 118 -74 124 0 7 -8 29 -19 49 -48 95 -64 140 -91 252 -46 197 -45 186 -44 475 1 163 6 309 13 350 7 39 16 102 21 140 6 39 16 99 24 135 8 36 19 94 25 130 6 36 20 97 30 135 11 39 25 90 31 115 6 25 20 72 30 105 10 33 21 77 25 97 3 20 12 50 20 65 8 15 15 37 15 48 0 11 9 38 20 60 11 22 20 49 20 60 0 11 9 38 20 60 11 22 19 48 20 58 0 11 7 33 14 50 15 33 49 126 68 187 5 19 17 44 24 55 8 11 14 27 14 37 0 10 8 37 19 60 10 24 24 59 31 78 32 91 42 117 54 145 7 17 19 46 26 65 7 19 18 53 26 75 8 22 19 48 25 59 6 10 17 37 24 60 7 22 23 66 35 96 12 30 30 78 40 105 10 28 28 75 40 105 12 30 30 79 41 108 38 104 58 158 84 227 14 39 30 84 35 100 5 17 32 95 60 175 28 80 57 165 64 190 8 25 19 59 24 75 16 43 46 138 71 225 13 41 30 98 38 125 9 28 22 75 29 105 18 78 33 136 55 206 11 33 19 68 19 77 0 9 7 38 16 64 9 26 22 73 30 103 43 188 120 382 177 446 51 58 118 62 213 14z"/> </g> <g class="m-2" transform="translate(0,2020) scale(0.100000,-0.100000)" fill="currentColor" stroke="none"> <path d="M21880 9979 c-19 -4 -87 -13 -150 -19 -63 -6 -158 -17 -210 -25 -52 -8 -124 -19 -160 -24 -81 -12 -199 -37 -265 -55 -27 -8 -72 -17 -100 -21 -27 -3 -70 -12 -95 -20 -25 -7 -65 -17 -90 -20 -25 -4 -54 -12 -64 -17 -11 -6 -42 -16 -70 -23 -28 -7 -67 -18 -86 -25 -19 -7 -57 -20 -85 -30 -146 -51 -276 -102 -305 -121 -8 -5 -24 -12 -34 -16 -19 -6 -95 -45 -220 -112 -32 -17 -80 -47 -105 -65 -25 -19 -64 -46 -86 -60 -177 -119 -376 -357 -441 -527 -28 -75 -64 -260 -64 -334 0 -71 29 -243 55 -325 7 -25 17 -65 20 -90 4 -25 12 -50 17 -57 5 -7 16 -34 23 -60 30 -104 81 -244 109 -298 9 -17 16 -34 16 -39 0 -5 9 -29 20 -53 11 -24 29 -64 41 -90 11 -27 24 -55 29 -63 5 -8 35 -66 67 -128 32 -62 64 -123 71 -136 6 -13 36 -60 65 -105 28 -44 65 -102 82 -128 100 -162 399 -493 445 -493 13 0 45 39 105 129 120 182 265 374 355 471 8 9 47 54 87 100 139 165 450 459 668 635 55 44 107 87 117 95 27 24 40 34 93 71 28 19 93 66 145 105 120 88 349 239 425 279 17 9 48 27 70 40 22 14 54 32 70 41 17 8 48 26 70 39 49 28 363 185 428 214 177 79 254 111 263 111 9 0 96 32 149 55 41 18 119 43 180 59 28 7 59 17 70 23 11 6 40 14 65 18 25 4 56 13 70 20 14 7 49 16 79 20 30 4 68 13 85 20 17 7 56 16 86 19 30 4 78 13 105 21 28 7 88 16 134 20 46 4 113 13 150 21 81 17 515 20 558 3 15 -6 57 -16 93 -24 206 -43 393 -153 515 -304 30 -37 55 -72 55 -77 0 -5 9 -25 19 -45 25 -47 45 -179 36 -248 -13 -115 -93 -238 -265 -411 -103 -103 -387 -343 -490 -413 -14 -9 -59 -42 -100 -72 -75 -55 -327 -228 -400 -275 -22 -14 -56 -37 -77 -51 -49 -34 -333 -219 -513 -334 -77 -49 -183 -118 -236 -152 -53 -35 -98 -63 -100 -63 -2 0 -18 -10 -37 -22 -19 -13 -73 -48 -121 -78 -47 -30 -144 -93 -214 -139 -70 -45 -134 -86 -142 -90 -30 -12 -1006 -657 -1092 -721 -26 -19 -111 -80 -188 -135 -262 -186 -374 -269 -547 -405 -95 -74 -192 -149 -215 -167 -24 -17 -52 -40 -63 -50 -11 -10 -61 -52 -110 -93 -50 -41 -97 -81 -106 -90 -9 -8 -56 -51 -105 -94 -110 -99 -430 -418 -506 -506 -31 -36 -75 -85 -97 -110 -22 -25 -41 -48 -41 -51 0 -4 -23 -35 -51 -70 -68 -85 -208 -297 -253 -384 -20 -38 -41 -77 -46 -85 -15 -25 -50 -106 -50 -115 0 -5 -8 -27 -19 -49 -24 -54 -58 -161 -66 -211 -4 -22 -14 -62 -22 -90 -23 -70 -23 -377 0 -455 8 -30 18 -77 22 -105 4 -27 11 -54 15 -60 4 -5 13 -30 20 -55 12 -46 55 -161 71 -189 5 -9 13 -27 19 -41 5 -14 14 -32 20 -40 5 -8 42 -73 81 -144 40 -71 96 -161 125 -200 29 -39 70 -95 91 -125 201 -282 549 -591 768 -681 l50 -20 2690 2 2690 3 3 1278 c2 1241 2 1277 -17 1277 -10 0 -34 -12 -54 -27 -20 -16 -61 -46 -92 -68 -30 -22 -76 -55 -101 -73 -91 -67 -546 -366 -683 -449 -114 -69 -163 -99 -226 -139 -38 -24 -77 -47 -85 -51 -14 -6 -163 -91 -200 -113 -8 -5 -71 -41 -140 -80 -69 -39 -132 -75 -140 -80 -47 -28 -234 -131 -290 -159 -36 -18 -119 -62 -185 -97 -66 -35 -131 -68 -145 -74 -14 -5 -32 -14 -40 -19 -8 -5 -64 -35 -125 -66 -60 -31 -117 -61 -125 -65 -8 -5 -60 -30 -115 -55 -55 -25 -107 -50 -115 -56 -8 -5 -26 -14 -40 -20 -14 -5 -56 -25 -95 -43 -38 -19 -91 -43 -117 -55 -27 -12 -68 -30 -93 -41 -25 -11 -65 -29 -90 -40 -25 -11 -64 -29 -88 -40 -24 -11 -48 -20 -53 -20 -5 0 -31 -12 -59 -25 -27 -14 -55 -25 -62 -25 -6 0 -24 -7 -40 -15 -53 -27 -203 -87 -253 -100 -14 -4 -34 -13 -45 -19 -11 -7 -33 -16 -50 -20 -16 -4 -43 -13 -60 -21 -29 -13 -75 -29 -175 -60 -72 -22 -143 -45 -175 -56 -16 -6 -58 -17 -92 -24 -34 -8 -70 -18 -80 -23 -10 -6 -40 -13 -68 -17 -27 -4 -61 -12 -73 -16 -20 -8 -118 -23 -358 -54 -142 -19 -305 140 -336 328 -20 120 -6 314 27 378 8 15 15 36 15 45 0 17 7 34 70 164 112 233 359 536 660 808 58 52 119 107 135 122 60 54 458 369 523 414 66 46 84 59 258 186 135 99 551 385 684 470 22 14 56 37 77 51 21 14 315 210 653 435 338 225 620 414 626 420 7 6 70 50 140 98 71 48 156 107 189 132 33 24 76 55 95 69 49 35 108 78 225 164 94 70 440 346 475 380 9 9 81 75 161 148 79 72 155 144 168 160 13 15 54 60 90 98 36 39 80 87 97 105 43 49 186 239 204 272 8 15 36 64 63 108 26 44 47 83 47 87 0 4 9 25 19 47 78 166 95 245 99 466 1 102 -2 221 -7 265 -22 164 -39 274 -46 285 -3 6 -11 41 -16 78 -5 37 -15 83 -23 102 -17 42 -42 117 -61 184 -8 27 -19 54 -24 59 -6 6 -11 17 -11 25 0 8 -34 84 -76 169 -107 215 -249 425 -414 607 -85 94 -261 259 -346 324 -38 29 -107 82 -153 117 -46 36 -88 65 -92 65 -4 0 -37 19 -72 43 -134 87 -186 116 -352 197 -217 105 -250 120 -264 120 -6 0 -28 9 -48 20 -21 11 -42 20 -48 20 -6 0 -28 9 -50 20 -22 11 -47 20 -57 20 -9 0 -32 6 -50 14 -43 19 -120 44 -184 60 -28 8 -59 18 -70 24 -10 5 -41 13 -69 17 -27 4 -64 13 -81 20 -17 7 -51 16 -75 20 -24 3 -64 13 -89 20 -25 8 -72 17 -105 20 -33 4 -85 13 -115 20 -30 8 -102 19 -160 25 -58 6 -127 16 -154 21 -61 11 -1229 10 -1276 -2z"/> </g> </svg>
+    <div class="c">
+      <a href="https://t.me/A12STUDIO" target="_blank" rel="noopener">Telegram @A12STUDIO</a>
+      <a data-mail="app" href="#">Почта</a>
+      <a href="https://www.instagram.com/ai2_studio" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://ru.pinterest.com/A12_studio/" target="_blank" rel="noopener">Pinterest</a>
+    </div>
+    <small>© 2026 A12 Studio<br>Performance AI Creative Studio</small>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var intro=document.getElementById('intro'), seen=false;
+  try{seen=sessionStorage.getItem('a12-intro')==='1';sessionStorage.setItem('a12-intro','1')}catch(e){}
+  if(seen||reduce){intro.classList.add('skip')}else{setTimeout(function(){intro.classList.add('skip')},2500)}
+
+  var top=document.getElementById('top');
+  function onScroll(){top.classList.toggle('scrolled',scrollY>24)}
+  addEventListener('scroll',onScroll,{passive:true});onScroll();
+
+  var hero=document.getElementById('hero'), keys=document.getElementById('keys');
+  if(!reduce&&matchMedia('(pointer:fine)').matches){
+    var items=[].slice.call(keys.children);
+    hero.addEventListener('pointermove',function(e){
+      var r=hero.getBoundingClientRect(), x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
+      items.forEach(function(li){var d=+li.dataset.d;li.style.transform='translate('+(x*d)+'px,'+(y*d*.6)+'px)'});
+    });
+    hero.addEventListener('pointerleave',function(){items.forEach(function(li){li.style.transform=''})});
+  }
+
+  // глаза кота: два слоя — яблоко двигается под мордочкой, радужка чуть дальше (поворот)
+  var svg=document.querySelector('#cat svg');
+  var balls=[{g:document.getElementById('ballL'),ix:734,iy:701},{g:document.getElementById('ballR'),ix:1149,iy:703}];
+  balls.forEach(function(b){b.iris=b.g.querySelector('.iris')});
+  var EX=940,EY=702,MX=34,MY=12;
+  var tx=0,ty=0,px=0,py=0,vx=0,vy=0,last=0,user=false;
+  function toSvg(cx,cy){var r=svg.getBoundingClientRect();var s=Math.min(r.width/1900,r.height/1300);
+    return{x:(cx-(r.left+(r.width-1900*s)/2))/s,y:(cy-(r.top+(r.height-1300*s)/2))/s}}
+  function aim(cx,cy){var p=toSvg(cx,cy),dx=p.x-EX,dy=p.y-EY,d=Math.hypot(dx,dy)||1,k=d/(d+700);
+    tx=Math.max(-MX,Math.min(MX,dx/d*k*MX*1.6));ty=Math.max(-MY,Math.min(MY,dy/d*k*MY*2.2));last=Date.now();user=true}
+  addEventListener('pointermove',function(e){aim(e.clientX,e.clientY)},{passive:true});
+  addEventListener('touchstart',function(e){var t=e.touches[0];if(t)aim(t.clientX,t.clientY)},{passive:true});
+  function step(){
+    if(!user||Date.now()-last>2500){tx=0;ty=0}
+    vx=(vx+(tx-px)*.06)*.76;vy=(vy+(ty-py)*.06)*.76;px+=vx;py+=vy;
+    var sx=1-Math.abs(px)/MX*.12, sy=1-Math.abs(py)/MY*.06;
+    balls.forEach(function(b){
+      b.g.setAttribute('transform','translate('+(px*.55).toFixed(2)+' '+(py*.55).toFixed(2)+')');
+      var ox=b.ix+px*.45, oy=b.iy+py*.45;
+      b.iris.setAttribute('transform','translate('+ox.toFixed(2)+' '+oy.toFixed(2)+') scale('+sx.toFixed(3)+' '+sy.toFixed(3)+') translate('+(-b.ix)+' '+(-b.iy)+')');
+    });
+    if(!reduce)requestAnimationFrame(step);
+  }
+  step();
+
+  if('IntersectionObserver' in window){
+    var vo=new IntersectionObserver(function(es){es.forEach(function(e){var v=e.target;if(e.isIntersecting){var p=v.play();if(p&&p.catch)p.catch(function(){})}else v.pause()})},{threshold:.05});
+    document.querySelectorAll('video').forEach(function(v){vo.observe(v)});
+  }
+})();
+</script>
+
+<script>
+/* почта: адрес не лежит в тексте страницы целиком */
+(()=>{const u=['stasi','zhd'].join('.'),d=['gmail','com'].join('.'),m=u+'@'+d,su='Задача для A12 Studio',e=encodeURIComponent;
+const href={app:'mailto:'+m+'?subject='+e(su),gmail:'https://mail.google.com/mail/?view=cm&fs=1&to='+m+'&su='+e(su),yandex:'https://mail.yandex.ru/compose?to='+m+'&subject='+e(su)};
+document.querySelectorAll('a[data-mail]').forEach(a=>a.href=href[a.dataset.mail]);
+const box=document.querySelector('.mail');if(!box)return;const b=box.querySelector(':scope>button'),menu=box.querySelector('.mailmenu');
+const set=o=>{menu.hidden=!o;b.setAttribute('aria-expanded',o)};
+b.addEventListener('click',()=>set(menu.hidden));
+document.addEventListener('click',ev=>{if(!box.contains(ev.target))set(false)});
+document.addEventListener('keydown',ev=>{if(ev.key==='Escape')set(false)});
+menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>setTimeout(()=>set(false),50)));
+const c=menu.querySelector('[data-mail=copy]');
+c.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(m);c.textContent='Адрес скопирован'}catch(_){c.textContent=m}setTimeout(()=>{c.textContent='Скопировать адрес'},2500)});
+})();
+</script>
+
+</html>
